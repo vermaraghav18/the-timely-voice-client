@@ -1,0 +1,208 @@
+:root{
+  /* Brand palette */
+  --primary-blue: #1B4965;
+  --teal: #1D9A8E;
+  --red: #FF3B30;
+  --amber: #FFC947;
+  --green: #00C853;
+
+    --body-min-h: 120px;   /* height of the red band area */
+  --body-pad-top: 18px;  /* extra space from image to text */
+  --body-pad-bottom: 14px;
+  --body-gap: 10px; 
+
+  /* Page */
+  --bg: #0f0f10;
+
+  /* === Card theme: MAROON === */
+  --card:   #410000;   /* maroon surface */
+  --border: #4A0E0E;   /* darker maroon border */
+  --card-ink: #F7F7FA; /* high-contrast text */
+  --muted: #E4C9C9;    /* metadata on maroon */
+  --section-divider: rgba(255,255,255,.10); /* thin grey on dark bg */
+  --radius-lg: 12px;
+  --shadow: 0 6px 20px rgba(0,0,0,.25);
+
+  /* === SIZE CONTROLS === */
+  /* Card size */
+  --card-w: 280px;          /* width of each card in the rail */
+  --card-h: 300px;          /* total card height (media + text band) */
+  --card-gap: 14px;         /* gap between cards */
+
+  /* Media (image) size inside the card */
+  --media-w: var(--card-w); /* usually same as card width */
+  --media-h: 180px;         /* 16:9 over 240px ≈ 135px (adjust as you like) */
+  --media-scale: 1.1;      /* slight zoom to give crop headroom */
+
+  /* Text sizing */
+  --card-title: 10px;
+  --card-title-max: 14.5px;
+  --title-lines: 2;         /* clamp headline lines */
+}
+
+body { background: var(--bg); }
+
+/* ---- Header row (title + arrows) ---- */
+.tv-rail-wrap{
+  border-top: 1px solid var(--section-divider);
+  border-bottom: 1px solid var(--section-divider);
+  padding-top: 16px;   /* add space away from the top line */
+  padding-bottom: 16px;/* add space away from the bottom line */
+  margin-block: 12px;  /* breathing room from adjacent sections */
+  border-radius: 0;    /* keep lines straight */
+}
+.tv-rail-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 12px 8px;
+}
+.tv-rail-title{
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+.tv-rail-controls{
+  display: flex; gap: 8px;
+}
+.tv-rail-btn{
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  border: 0px solid var(--border);
+  background: #1a1b20;
+  color: #e9eef8;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.tv-rail-btn:hover{ background:#22242b; }
+
+/* ---- Horizontal rail ---- */
+.tv-rail{
+  display: flex;
+  gap: var(--card-gap);
+  overflow-x: auto;
+  padding: 8px 12px 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* scrollbar styling */
+.tv-rail::-webkit-scrollbar{ height: 8px; }
+.tv-rail::-webkit-scrollbar-thumb{ background: #2a2d34; border-radius: 8px; }
+@supports (scrollbar-width: thin){
+  .tv-rail{ scrollbar-width: thin; scrollbar-color: #2a2d34 transparent; }
+}
+
+/* ---- Card ---- */
+.tv-card{
+  scroll-snap-align: start;
+  flex: 0 0 var(--card-w);   /* fixed width in the rail */
+  width: var(--card-w);      /* explicit width */
+  height: var(--card-h);     /* explicit height */
+  background: var(--card);
+  border: 0px solid var(--border);
+  border-radius: calc(var(--radius-lg) + 0px);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.tv-card:hover{
+  transform: translateY(-1px);
+  border-color: #6A1717; /* subtle lighter maroon on hover */
+  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+}
+
+/* ---- Media (fixed width/height + crop headroom) ---- */
+.tv-media{
+  position: relative;
+  overflow: hidden;
+  width: var(--media-w);
+  height: var(--media-h);
+  flex: 0 0 auto;            /* do not stretch */
+}
+.tv-media > img{
+  position: absolute; inset: 0;
+  width: var(--media-w);
+  height: var(--media-h);
+  object-fit: cover;
+  transform: scale(var(--media-scale));
+  transform-origin: center;
+}
+/* gentle bottom gradient for contrast */
+.tv-media::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0;
+  height: 45%;
+  background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
+  pointer-events: none;
+}
+
+/* ---- Tag pills ---- */
+.tv-tag{
+  position:absolute; top:8px; left:8px;
+  padding:5px 9px; font-size:11px; font-weight:800; color:#fff;
+  border-radius:6px; background:var(--primary-blue);
+  box-shadow: 0 2px 10px rgba(0,0,0,.25); text-transform:uppercase;
+}
+.tv-tag--alert{ background:var(--red); }
+.tv-tag--opinion{ background:var(--primary-blue); }
+
+/* ---- Optional play icon ---- */
+.tv-play{
+  position:absolute; right:10px; bottom:10px;
+  width:32px; height:32px; border-radius:999px;
+  background: rgba(255,255,255,.92);
+  display:grid; place-items:center;
+  box-shadow: 0 3px 12px rgba(0,0,0,.35);
+}
+.tv-play svg{ width:16px; height:16px; fill:#0b0b0c; }
+
+/* ---- Text band ---- */
+.tv-body{
+  background: var(--card);
+  border-top: 1px solid rgba(255,255,255,.06);
+  min-height: var(--body-min-h);
+
+  /* center the text block vertically + horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* spacing from image and within */
+  padding: var(--body-pad-top) 12px var(--body-pad-bottom);
+  gap: var(--body-gap);
+  text-align: center;
+}
+.tv-title{
+  font-size: clamp(var(--card-title), 2.4vw, var(--card-title-max));
+  text-align: center;        /* ensure multi-line title is centered */
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.25;
+  font-weight: 800;
+  color: var(--card-ink);
+  padding: 0 12px 0;
+  margin: 0;
+  text-wrap: balance;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--title-lines);
+  line-clamp: var(--title-lines);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tv-meta{
+  justify-content: center;
+  margin-top: 0;       /* keep it close to the title */
+  display:flex; align-items:center; gap:8px;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 0 10px 10px;
+}
+
+.tv-clock{ color: var(--muted); }

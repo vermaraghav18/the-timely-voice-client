@@ -1,0 +1,2043 @@
+/* ==== THEME TOKENS ==== */
+:root{
+  --blue-1:#5186B6;
+  --blue-2:#1D63A2;
+  --blue-3:#0E4F87;
+
+  /* NEW: admin-driven dynamic tokens (default to the static ones) */
+  --tv-blue-1: var(--blue-1);
+  --tv-blue-2: var(--blue-2);
+  --tv-blue-3: var(--blue-3);
+
+   --rel-neutral: #1b2329; /* dark grey that matches theme panels */
+
+   --hi-yellow: #fffb00;          /* brighter than #FFC947 */
+  --hi-yellow-text: #1b1b1b;     /* dark text for contrast */
+  --hi-yellow-border: rgba(0,0,0,.18);
+
+  --brand:#1D9A8E;
+  --brand2:#18bdac;
+  --brand3:#15e6d1;
+  --accent:#FF6B35;
+  --accent2:#FFC947;
+
+  --lime:#bbff00;
+  --red:#E53935;
+
+  --ink:#ffffff;
+  --ink-muted: rgba(255,255,255,0.85);
+  --line: rgba(255,255,255,0.15);
+
+  --shadow: 0 6px 18px rgba(0,0,0,0.26);
+
+  --container: 1280px;
+  --gutter: 20px;
+  --hero-height: 360px;
+
+  /* Unified panel style for 3 columns */
+  --panel-bg: #0f1417;
+  --panel-stroke: rgba(255,255,255,.08);
+  --panel-ink: #e6eef6;
+}
+
+/* ==== RESET ==== */
+*{ box-sizing:border-box; }
+html, body { height: 100%; }
+body{
+  margin:0;
+  background:#242424;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+}
+
+/* ==== PAGE WRAP ==== */
+.page{ max-width: 1280px; margin: 0 auto; padding: 12px 16px 24px; }
+
+/* ================= HEADER ================= */
+.tv-header{ position: sticky; top: 0; z-index: 50; box-shadow: none; background: transparent; }
+.tv-header.is-stuck{ box-shadow: 0 8px 18px rgba(0,0,0,0.28); }
+
+/* Row 1: Masthead */
+.tv-masthead{
+  /* NEW: use admin-driven gradient with fallback to original tokens */
+  background: linear-gradient(180deg, var(--tv-blue-1, var(--blue-1)), var(--tv-blue-2, var(--blue-2)));
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  display: grid;
+  grid-template-columns:
+    minmax(10px, 0.5fr)
+    minmax(0, calc(var(--container) / 3))
+    auto
+    minmax(0, calc(var(--container) / 3))
+    minmax(var(--gutter), 1fr);
+  align-items: center;
+  column-gap: 20px;
+  padding: 16px 0 12px;
+}
+.left-utility{ grid-column: 2; }
+.brand-wrap{ grid-column: 3; justify-self: center; }
+.mast-actions{ grid-column: 4; justify-self: end; }
+
+.brand-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.wordmark{
+  font-family: Anton, Impact, Inter, sans-serif;
+  font-size: clamp(44px, 6vw, 64px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.25);
+}
+.ticker{ margin-top: 6px; }
+.ticker .chip{
+  display:inline-block; background: var(--red); color: #fff; font-weight: 800;
+  font-size: 12px; padding: 4px 8px; border-radius: 4px; letter-spacing: 0.03em;
+}
+
+/* Right actions */
+.mast-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end; }
+.btn{ display:inline-flex; align-items:center; gap:6px; height: 32px; padding: 0 10px; border-radius: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; text-transform: uppercase; }
+.btn svg{ width: 14px; height: 14px; opacity:0.9; }
+.btn-outline{ background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.btn-outline:hover{ background: rgba(255,255,255,0.08); }
+.btn-solid{ background: var(--brand); color: #fff; border: 1px solid rgba(0,0,0,0.1); }
+.btn-solid:hover{ filter: brightness(1.05); }
+
+/* Weather badge (hook when ready) */
+.weather-badge{ display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 10px; border-radius:10px;
+  border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.06); color:var(--ink); font-weight:700; letter-spacing:.02em; line-height:1; }
+.weather-badge[aria-busy="true"]{ opacity: .7; }
+
+.langs{ display:flex; gap:12px; }
+.lang{ color: var(--ink-muted); text-decoration:none; font-size: 12px; letter-spacing: 0.04em; }
+.lang.active{ color: var(--ink); font-weight:700; }
+
+/* Row 2: Tabs */
+.tv-tabsbar{
+  /* NEW: use admin-driven color with fallback */
+  background: var(--tv-blue-3, var(--blue-3));
+  border-top: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid var(--line, rgba(0,0,0,0.25));
+  display:grid;
+  grid-template-columns: minmax(var(--gutter), 1fr) minmax(0, var(--container)) minmax(var(--gutter), 1fr);
+  align-items:center; padding: 6px 0;
+}
+.tabs{ grid-column:2; display:flex; justify-content:center; align-items:center; gap:2px; overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar{ display:none; }
+.tab{
+  position:relative; border:0; background:transparent; color: var(--ink-muted);
+  text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em; font-size: 12px;
+  padding: 8px 12px; border-radius: 20px; cursor:pointer; white-space: nowrap;
+  transition: opacity .15s ease, background .15s ease;
+}
+.tab:hover{ color: var(--ink); }
+.tab.active{ color: var(--ink); background: rgba(255,255,255,0.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+
+/* Left util */
+.left-utility{ display:flex; flex-direction:column; align-items:center; gap:8px; min-width:280px; padding-left:0; }
+.follow-row { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; }
+.follow-label { font-size:12px; font-weight:600; letter-spacing:.02em; color: var(--ink-muted); margin-right:4px; white-space:nowrap; }
+.socials { display:inline-flex; gap:8px; }
+.social-link {
+  width:28px; height:28px; display:grid; place-items:center; border-radius:999px; background: rgba(0,0,0,.15); color:#fff;
+  transition: transform .12s ease, background .12s ease; outline-offset:2px;
+}
+.social-link:hover { transform: translateY(-1px); background: rgba(0,0,0,.25); }
+
+.mini-ticker { position:relative; overflow:hidden; height:26px; width:80%; max-width:500px; border-radius:999px; background: rgba(0,0,0,.15); border:1px solid var(--line);}
+/* ... (UNCHANGED CSS BELOW UNTIL COMPACT BAR) ... */
+
+/* ===== Collapsing header animation ===== */
+.tv-header { will-change: transform; }
+.hide-on-collapse > .tv-masthead,
+.hide-on-collapse > .tv-tabsbar,
+.hide-on-collapse > .tv-vticker {
+  transition: transform .28s ease, opacity .28s ease, max-height .28s ease;
+  transform: translateY(0);
+  opacity: 1;
+  max-height: 400px;
+}
+.tv-compactbar{
+  position: sticky; top: 0; z-index: 60;
+  /* NEW: use admin-driven gradient with fallback to original tokens */
+  background: linear-gradient(180deg, var(--tv-blue-1, var(--blue-1)), var(--tv-blue-2, var(--blue-2)));
+  border-bottom: 1px solid rgba(0,0,0,.25);
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform .28s ease, opacity .28s ease;
+  height: 44px; display:flex; align-items:center;
+}
+/* ... (THE REST OF YOUR CSS REMAINS EXACTLY THE SAME) ... */
+
+.cb-inner{ max-width: var(--container); margin:0 auto; padding:0 16px; width:100%;
+  display:flex; align-items:center; justify-content:space-between; }
+.cb-brand{
+  font-family: Anton, Impact, Inter, sans-serif; letter-spacing:.02em; font-weight:900; color:#fff;
+  font-size:20px; line-height:1; text-shadow: 0 1px 0 rgba(0,0,0,.25);
+}
+.cb-date{
+  display:inline-block; background: var(--red); color:#fff; font-weight:900; font-size:12px;
+  padding:5px 10px; border-radius:6px; letter-spacing:.03em; border:1px solid rgba(0,0,0,.16);
+}
+
+/* collapsed state */
+.tv-header.is-collapsed .hide-on-collapse > .tv-masthead,
+.tv-header.is-collapsed .hide-on-collapse > .tv-tabsbar,
+.tv-header.is-collapsed .hide-on-collapse > .tv-vticker{
+  transform: translateY(-16px);
+  opacity: 0;
+  max-height: 0;
+  pointer-events: none;
+}
+.tv-header.is-collapsed .tv-compactbar{
+  transform: translateY(0);
+  opacity: 1;
+  box-shadow: 0 8px 18px rgba(0,0,0,.28);
+}
+@media (max-width:640px){
+  .tv-header.is-collapsed .tv-compactbar{ height:42px; }
+}
+
+/* ======== FEATURED ARTICLE + RIGHT SIDEBAR (FINAL) ======== */
+.feat-wrap{
+  max-width: var(--container);
+  margin: 12px auto 24px;
+  padding: 0 16px;
+}
+
+/* Two-column layout: left = featured, right = stacked lists */
+.feat-grid{
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) minmax(320px, 1fr);
+  gap: 20px;
+  align-items: stretch; /* make columns equal height */
+}
+
+/* ---------- LEFT: Featured card ---------- */
+.feat{
+  background: #222;
+  color: #fff;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+  box-shadow: var(--shadow);
+  align-items: start;
+}
+.feat-left{ font-size:.95rem; min-width:0; }
+.feat-meta{ display:flex; gap:10px; align-items:center; margin-bottom:8px; }
+.feat-live{
+  background: var(--red); color:#fff; font-weight:900; font-size:12px; line-height:1;
+  padding:5px 8px; border-radius:6px; border:1px solid rgba(0,0,0,.16);
+}
+
+/* === Highlight sweep for Breaking Section === */
+.b-title .hl-sweep {
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(
+    0deg,
+    rgba(255,107,53,0.65),
+    rgba(255,107,53,0.65)
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 85%;       /* start collapsed */
+  background-position: 0 60%;
+  border-radius: 4px;
+  padding: 2px 0;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.b-title {
+  font-size: 0.95rem;
+  line-height: 1.3;
+  word-break: break-word;     /* allow wrap inside words if needed */
+  overflow-wrap: anywhere;    /* break long words */
+  hyphens: auto;              /* optional: adds hyphens */
+  margin-right: 6px;          /* gives room so last word wraps */
+}
+
+
+@keyframes breakingSweep {
+  0%   { background-size: 0% 85%; }
+  10%  { background-size: 10% 85%; }
+  100% { background-size: 100% 85%; }
+}
+
+.breaking-highlight {
+  position: absolute;
+  background: #1B4965;
+  border-radius: 10px;
+  z-index: 0;
+
+  margin-top: -4px;    /* vertical balance */
+  margin-left: -8px;   /* left balance */
+
+  transition:
+    top 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    left 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    width 0.45s ease,
+    height 0.45s ease;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28); /* more natural shadow */
+  will-change: top, left, width, height;
+}
+
+
+.b-item {
+  position: relative;
+  z-index: 1;                /* keep items above the highlight */
+}
+
+
+.b-title .hl-sweep.run {
+  animation: breakingSweep 1.2s ease-out forwards;
+}
+
+.feat-upd{ color: rgba(255,255,255,.85); font-weight:700; font-size:12px; letter-spacing:.03em; text-transform:uppercase; }
+.feat-title{ font-size: clamp(24px, 2.8vw, 40px); line-height:1.12; margin:6px 0 8px; font-weight:900; }
+.feat-title a{ color:#fff; text-decoration:none; }
+.feat-title a:hover{ text-decoration:underline; }
+.feat-authors{ color:#9ad3ff; font-weight:800; margin-bottom:8px; letter-spacing:.01em; }
+.feat-summary{
+  color: rgba(255,255,255,.92); margin: 8px 0 0;
+  overflow-wrap:anywhere;
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+}
+.feat-image{ display:block; align-self:start; }
+.feat-imgbox{ aspect-ratio:4/3; overflow:hidden; border-radius:8px; background:#111; border:1px solid rgba(255,255,255,.12); }
+.feat-imgbox img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ---------- Related cards row (5-up on desktop) ---------- */
+.feat-related{
+  grid-column: 1 / -1;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  justify-content: start;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+/* Base card = NEUTRAL GREY (red only on the active one) */
+.rel-card a{
+  display: grid;                       /* Image -> Time -> Title */
+  grid-template-rows: 84px auto 1fr;
+  gap: 6px;
+
+  background: var(--rel-neutral);      /* neutral base */
+  color: var(--panel-ink);
+  border: 1px solid var(--panel-stroke);
+  border-radius: 12px;
+  height: 100%;
+  padding: 0 0 10px;
+  overflow: hidden;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,.18);
+  text-decoration: none;
+  transition: background-color .28s ease, color .28s ease, border-color .28s ease, filter .2s ease;
+}
+.rel-card a,
+.rel-card a:visited,
+.rel-card a:hover,
+.rel-card a:active{ text-decoration:none; }
+
+/* image flush to edges */
+.rel-thumb{
+  width: 100%;
+  height: 84px;
+  overflow: hidden;
+  background: #000;
+}
+.rel-thumb img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* compact text */
+.rel-time{
+  font-size: 10px;
+  opacity: .95;
+  font-weight: 900;
+  letter-spacing: .02em;
+  line-height: 1;
+  padding: 0 8px;
+}
+.rel-title{
+  font-size: 12.5px;
+  font-weight: 900;
+  line-height: 1.22;
+  padding: 0 8px;
+}
+.rel-card a:hover{ filter: brightness(1.04); }
+
+/* ACTIVE card = RED (this class is toggled by JS every 3s) */
+.rel-card.is-active a{
+  background: var(--red);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(0,0,0,.16) inset;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px){
+  .feat-related{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+  }
+  .rel-card a{ grid-template-rows: 72px auto 1fr; }
+  .rel-thumb{ height: 72px; }
+}
+@media (max-width: 640px){
+  .feat-related{ grid-template-columns: 1fr; }
+  .rel-card a{ grid-template-rows: 64px auto 1fr; }
+  .rel-thumb{ height: 64px; }
+  .rel-title{ font-size: 12px; }
+}
+
+/* === Auto-height side panel (used for OPINIONS) === */
+.panel-auto{
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  border: 1px solid var(--panel-stroke);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+
+  /* key differences from .side-col */
+  display: block;          /* no flex container */
+  height: auto;            /* shrink to content */
+  align-self: start;       /* do NOT stretch to center column’s height */
+  min-width: 0;            /* allow text to wrap nicely */
+}
+
+
+/* A generic section wrapper that matches .feat-wrap side padding/width */
+.section-wrap{
+  max-width: var(--container);
+  margin: 0 auto;        /* centers like the hero/feature */
+  padding: 0 16px;       /* <-- matches .feat-wrap so borders align perfectly */
+}
+
+/* Two-column variant for the news grid (replaces the inline style) */
+/* tighten the space between Breaking (left) and Opinions (right) */
+.news-3col.two-col{
+  grid-template-columns: minmax(0, 2.4fr) minmax(260px, 300px); /* keep your sizes */
+  column-gap: 16px;   /* was 28px via .news-3col; reduce to 16 (or 18/20 as you like) */
+  /* row-gap stays as-is */
+}
+
+/* optional: a bit tighter on very wide screens */
+@media (min-width: 1280px){
+  .news-3col.two-col{ column-gap: 21px; }
+}
+
+
+/* --- separators for Breaking items --- */
+.b-item{
+  padding-bottom: 10px;                            /* room for the line */
+  border-bottom: 1px solid rgba(255,255,255,0.06); /* thin grey line */
+}
+
+/* remove the line for the LAST ROW (2 items in desktop grid) */
+.breaking-grid .b-item:nth-last-child(-n+2){
+  border-bottom: none;
+}
+
+/* on mobile it's a 1-column list, so only the last 1 item should drop the line */
+@media (max-width:980px){
+  .breaking-grid .b-item:nth-last-child(-n+1){
+    border-bottom: none;
+  }
+}
+
+/* ---------- RIGHT: Sidebar (Top/Trending) ---------- */
+/* Make the sidebar match the left column's height */
+.feat-side{
+  display: flex;                /* was grid */
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  min-height: 100%;
+  min-width: 0;                 /* critical in grid so children can shrink */
+}
+
+.side-block{
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  border: 1px solid var(--panel-stroke);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  min-width: 0;
+
+  display: flex;               /* let header + list stack */
+  flex-direction: column;
+  flex: 1 1 0;                 /* both Top & Trending share height */
+  min-height: 0;               /* enables inner overflow if needed */
+}
+.side-header{
+  font-weight: 900; letter-spacing:.04em; font-size:11px; color:#fff;
+  margin:0 0 8px; padding-left:8px; position:relative; text-transform:uppercase;
+}
+.side-header::before{
+  content:""; position:absolute; left:0; top:.2em; bottom:.2em; width:4px; background:var(--accent); border-radius:2px;
+}
+.side-list{
+  list-style:none; padding:0; margin:0;
+  display:grid; gap:4px;  
+  min-width: 0;
+  position: relative;
+  padding: 8px; 
+
+  flex: 1 1 auto;              /* stretch to fill panel */
+  min-height: 0;
+  /* optional: enable scroll if content gets taller than panel */
+  /* overflow:auto; */
+}
+.side-item{ min-width: 0; }
+
+/* one row = [index] [title grows] [time/reads] */
+.side-link{
+  display:grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items:start;
+  gap:8px;
+  text-decoration:none; color:inherit;
+  padding:6px 6px;
+  border-radius:8px;
+  min-width: 0;
+}
+.side-link:hover{ background: rgba(255,255,255,.06); }
+
+/* Sidebar title text */
+.feat-side .side-title{
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.22;
+  color: var(--panel-ink);
+  min-width: 0;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Focus visibility */
+.feat a:focus-visible,
+.feat-side a:focus-visible{
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Responsive for featured block container layout */
+@media (max-width: 900px){
+  .feat-grid{ grid-template-columns: 1fr; }
+  .feat{ grid-template-columns: 1fr; }
+}
+@media (max-width: 640px){
+  .feat-wrap{ padding: 0 12px; }
+}
+
+
+/* ========= Breaking Section (inside center column panel) ========= */
+.breaking-wrap{ margin:0; padding:0; background:transparent; border:0; color: var(--panel-ink); }
+.breaking-head{ margin-bottom:8px; }
+.breaking-title{
+  position:relative; font-weight:900; font-size: clamp(18px, 2vw, 22px); line-height:1.1;
+  margin:0; padding-left:12px; color: var(--panel-ink);
+}
+.breaking-title::before{
+  content:""; position:absolute; left:0; top:.2em; bottom:.2em; width:4px; background: var(--accent); border-radius:2px;
+}
+.breaking-grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:14px 18px; }
+.b-item{ display:grid; grid-template-columns:104px 1fr; gap:10px; align-items:center; text-decoration:none; color:inherit; }
+.b-item:hover .b-title{ text-decoration:underline; }
+.b-thumb{ width:104px; height:66px; border-radius:8px; overflow:hidden; background:#101418; border:1px solid var(--panel-stroke); }
+.b-thumb img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .18s ease; }
+.b-item:hover .b-thumb img{ transform: scale(1.04); }
+.b-title{ font-weight:800; line-height:1.25; font-size: clamp(12.8px, 1.2vw, 14px); color: var(--panel-ink); }
+@media (max-width:980px){ .breaking-grid{ grid-template-columns:1fr; gap:12px; } .b-item{ grid-template-columns:104px 1fr; } }
+@media (max-width:640px){ .b-item{ grid-template-columns:96px 1fr; gap:8px; } .b-thumb{ width:96px; height:60px; border-radius:6px; } .b-title{ font-size: clamp(12.2px, 3.4vw, 13.6px); } }
+
+/* =================== SPORTS SHOWCASE =================== */
+.sports-wrap{
+  position: relative;
+  margin: 20px 0;
+  padding: 8px 0 20px;              /* ↑ extra top space so label sits below the line */
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+   overflow: visible; 
+}
+
+/* The animated yellow "sun" */
+/* the scroll-reactive yellow spot */
+.sports-spot{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  /* give it a huge base size so it can overflow well past the container */
+  width: clamp(700px, 120vw, 1800px);
+  aspect-ratio: 1 / 1;
+
+  /* center it and drive size with the JS scale (0..1) */
+  transform: translate(-50%, -50%) scale(var(--sports-spot-scale, 0));
+  opacity: var(--sports-spot-opacity, 0);
+
+  pointer-events: none;
+  z-index: -1;                       /* behind all section content */
+
+  /* soft radial glow that fades at the edges */
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(4, 0, 255, 0.25) 0%,
+    rgba(255, 251, 0, 0.15) 45%,
+    rgba(255, 251, 0, 0.08) 62%,
+    rgba(255, 251, 0, 0.0) 75%
+  );
+  filter: blur(24px);
+}
+
+/* a huge circle centered in the section; we scale it 0..1 */
+.sports-spot::before{
+  content:"";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 165vmax;                /* big enough to cover any section size */
+  height: 165vmax;
+  transform: translate(-50%, -50%)
+             scale(var(--sports-spot-scale, 0));
+  transform-origin: 50% 50%;
+  border-radius: 100%;
+  background: radial-gradient(
+    circle at center,
+    #00284e 0%,
+    #0E4F87 40%,
+    #5186B6 62%,
+    #5186B6  92%
+  );
+  opacity: var(--sports-spot-opacity, 0);
+  transition: transform 320ms cubic-bezier(.25,.9,.2,1),
+              opacity 260ms ease;
+  /* If you want stronger color mixing on dark bg, uncomment: */
+  /* mix-blend-mode: screen; */
+}
+
+/* make sure normal content stays above the spot */
+.sports-wrap > *:not(.sports-spot){
+  position: relative;
+  z-index: 1;
+}
+
+/* reduced motion: no animation, just show/hide based on thresholds */
+@media (prefers-reduced-motion: reduce){
+  .sports-spot::before{
+    transition: none;
+  }
+}
+
+@media (max-width: 640px){
+  .sports-spot{ width: clamp(520px, 140vw, 1200px); filter: blur(18px); }
+}
+
+.sports-grid{ display: grid; grid-template-columns: 3fr 2fr; gap: 22px; }
+  /* SPORTS hero: make sure the image is always visible */
+.sport-hero{
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 10px 28px rgba(0,0,0,.28);
+  min-height: 360px;               /* <— fallback for browsers without aspect-ratio */
+}
+@supports (aspect-ratio: 1) {
+  .sport-hero{ min-height: auto; } /* rely on aspect-ratio when supported */
+}
+.sport-hero img{
+  position: absolute; inset: 0;    /* <— guarantees it fills the box */
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transform: none;
+}
+
+/* ===== SPORTS hero rotator (fade + slight slide) ===== */
+.sport-rotator{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  /* keep the same chrome the single hero had */
+  background: #111;
+  box-shadow: 0 10px 28px rgba(0,0,0,.28);
+  min-height: 360px;          /* fallback for older browsers */
+}
+@supports (aspect-ratio: 1) {
+  .sport-rotator{ min-height: auto; }
+}
+
+/* stack slides inside the rotator */
+.sport-rotator .sport-hero{
+  position: absolute;
+  inset: 0;
+}
+
+/* transition like your mid-rotator */
+.sh-slide{
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.sh-slide.is-active{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .sh-slide{ transition: none; transform: none; }
+}
+
+/* Sports: container for the Breaking-style grid under the section */
+.sports-breaking-panel{
+  margin-top: 16px;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  border: 1px solid var(--panel-stroke);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+/* Sports news grid: clone of Breaking styles but scoped with sb-* */
+.sb-grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:14px 18px; }
+.sb-item{ display:grid; grid-template-columns:104px 1fr; gap:10px; align-items:center; text-decoration:none; color:inherit; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.sb-thumb{ width:104px; height:66px; border-radius:8px; overflow:hidden; background:#101418; border:1px solid var(--panel-stroke); }
+.sb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .18s ease; }
+.sb-item:hover .sb-thumb img{ transform: scale(1.04); }
+.sb-title{ font-weight:800; line-height:1.25; font-size: clamp(12.8px, 1.2vw, 14px); color: var(--panel-ink); }
+@media (max-width:980px){ .sb-grid{ grid-template-columns:1fr; gap:12px; } .sb-item{ grid-template-columns:104px 1fr; } }
+@media (max-width:640px){ .sb-item{ grid-template-columns:96px 1fr; gap:8px; } .sb-thumb{ width:96px; height:60px; border-radius:6px; } .sb-title{ font-size: clamp(12.2px, 3.4vw, 13.6px); } }
+
+/* no blue highlighter in Sports grid */
+
+
+/* lighten the dark overlay a touch so the photo shows through more */
+.sh-glass{
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 120% at 10% 10%, rgba(20,25,30,.55) 0%, rgba(10,14,16,.25) 55%, rgba(0,0,0,.06) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.55) 100%);
+  pointer-events: none;
+}
+
+.sh-copy{ position:absolute; left:18px; right:18px; bottom:18px; }
+.sh-tag{
+  display:inline-block; font-size:12px; font-weight:800; letter-spacing:.04em;
+  background: var(--lime); color:#0d2a17; padding:6px 10px; border-radius:999px; border:1px solid rgba(0,0,0,.12);
+}
+.sh-title{ margin:10px 0 0; font-weight:900; line-height:1.15; font-size: clamp(20px, 2.8vw, 28px); color:#fff; }
+
+.row-head{ display:flex; align-items:center; justify-content:space-between; margin:16px 2px 10px; }
+.row-head h4{ margin:0; font-size:16px; font-weight:800; color:#dfe7ef; }
+.dots{ display:inline-flex; gap:6px; }
+.dot{ width:8px; height:8px; border-radius:999px; background: rgba(255,255,255,.22); }
+.dot.is-active{ background:#fff; }
+
+.trend-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; }
+.trend-card{ text-decoration:none; color:inherit; }
+.tc-thumb{
+  position:relative; width:100%; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+  background:#0f1417; border:1px solid rgba(255,255,255,.08);
+}
+.tc-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.tc-tag{
+  position:absolute; left:8px; bottom:8px; display:inline-block; font-size:10px; font-weight:900; letter-spacing:.04em;
+  background: rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.25); padding:4px 8px; border-radius:999px; backdrop-filter: blur(2px);
+}
+.tc-title{ margin-top:8px; font-size:13.5px; line-height:1.25; font-weight:800; color:#dfe7ef; }
+
+.sports-right{ display:grid; gap:16px; align-content:start; }
+
+.side-panel{ background:#12181c; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px; }
+.side-tabs{
+  display:inline-flex; gap:6px; background:#0e1317; padding:4px; border-radius:999px; border:1px solid rgba(255,255,255,.06);
+}
+.side-tabs .tab{
+  appearance:none; border:0; background:transparent; color:#cfe1ee; font-size:12px; font-weight:800; letter-spacing:.03em; padding:6px 10px; border-radius:999px; cursor:pointer;
+}
+.side-tabs .tab.active{ background:#1b2329; color:#fff; }
+.sports-right .side-list{ margin-top:12px; display:grid; gap:10px; }
+.sports-right .side-item{
+  display:grid; grid-template-columns:56px 1fr; gap:10px; align-items:center;
+  text-decoration:none; color:inherit; padding:8px; border-radius:12px;
+}
+
+.side-item:hover{ background: rgba(255,255,255,.04); }
+.si-thumb{
+  width:56px; height:56px; border-radius:10px; overflow:hidden;
+  background:#0e1417; border:1px solid rgba(255,255,255,.10);
+}
+.si-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.si-title{ font-size:13px; line-height:1.25; font-weight:800; color:#e6eef6; }
+
+.side-item.hi{
+  background: var(--hi-yellow);
+  border: 1px solid var(--hi-yellow-border);
+}
+.side-item.hi .si-title{
+  color: var(--hi-yellow-text);
+  font-weight: 700;
+}
+
+/* Optional: subtle “pressed” hover */
+.side-item.hi:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+}
+.side-item.hi .si-thumb{ border-color: rgba(0,0,0,.15); }
+
+.live-panel{ background:#12181c; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px; }
+.live-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.live-head h4{ margin:0; font-size:14px; font-weight:900; color:#dfe7ef; }
+.live-dot{
+  width:10px; height:10px; border-radius:999px; background:#ff3b3b; box-shadow:0 0 0 6px rgba(255,59,59,.15);
+  animation: pulse 1.6s infinite;
+}
+@keyframes pulse{
+  0%{ box-shadow:0 0 0 0 rgba(255,59,59,.35); }
+  70%{ box-shadow:0 0 0 8px rgba(255,59,59,0); }
+  100%{ box-shadow:0 0 0 0 rgba(255,59,59,0); }
+}
+.live-list{ display:grid; gap:10px; }
+.match{ background:#0f1417; border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:10px; }
+.match-meta{ font-size:11px; color:#a8bdcc; margin-bottom:6px; }
+.match-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.team{ display:flex; align-items:center; gap:8px; font-weight:800; }
+.team .flag{ font-size:16px; line-height:1; }
+.team .name{ color:#e7f0f7; }
+.team .score{ color:#fff; background:#1b2329; padding:2px 8px; border-radius:8px; font-size:12px; }
+.vs{ color:#a8bdcc; font-weight:900; font-size:12px; }
+.status{ margin-top:6px; font-size:11px; color:#a8bdcc; }
+.status.is-live{ color:#ff9a7a; }
+
+@media (max-width: 980px){
+  .sports-grid{ grid-template-columns: 1fr; }
+}
+@media (max-width: 640px){
+  .trend-grid{ grid-template-columns: repeat(2, 1fr); }
+  .sport-hero{ border-radius: 14px; }
+  .sh-title{ font-size: clamp(18px, 5.2vw, 24px); }
+}
+
+/* =================== SPORTS — SECTION LABEL =================== */
+/* SPORTS uses the same heading, just yellow underline */
+.tv-section-title.sports-title{
+  border-bottom-color: var(--hi-yellow);
+}
+
+
+
+/* ===== 3-column news layout ===== */
+.news-3col{
+  display:grid;
+  grid-template-columns: minmax(260px,300px) 1fr minmax(260px,300px);
+  gap: 28px;
+  align-items: stretch;
+  margin-top: 16px;
+}
+
+/* Equal-height panels */
+.news-center, .side-col{
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  border: 1px solid var(--panel-stroke);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; height: 100%; align-self: stretch;
+}
+/* This global .side-title is used in other sections; the sidebar uses the scoped
+   .feat-side .side-title above, so there’s no conflict. */
+.side-title{ font-weight:800; font-size:12px; margin:2px 0 10px; color:#cfe1ee; }
+
+/* Left/Right columns */
+.topnews-list{ display:flex; flex-direction:column; gap:10px; }
+.tn-item{ display:flex; gap:10px; text-decoration:none; color:inherit; padding:8px; border-radius:10px; }
+.tn-item:hover{ background: rgba(255,255,255,0.04); }
+.tn-thumb{ width:96px; height:64px; flex:0 0 auto; border-radius:8px; overflow:hidden; background:#0e1417; border:1px solid var(--panel-stroke); }
+.tn-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.tn-title{ font-size:13.5px; line-height:1.25; font-weight:700; color: var(--panel-ink); }
+
+.latest-list{ display:flex; flex-direction:column; }
+.ln-item{ display:flex; gap:8px; align-items:flex-start; text-decoration:none; color:#bcd6f0; padding:8px 6px; border-top:1px solid rgba(255,255,255,0.06); }
+.ln-item:first-child{ border-top:none; }
+.ln-item:hover .ln-title{ text-decoration:underline; }
+.ln-bullet{ font-weight:900; color:#FF6B35; margin-top:-2px; }
+
+.news-center { min-width: 0; }
+.news-center .breaking-wrap{ margin:0; }
+
+/* Responsive: stack columns */
+@media (max-width:1100px){ .news-3col{ grid-template-columns: 1fr; } }
+
+/* ================== Article Blocks (shared) ================== */
+/* new — match site container width */
+.ab {
+  margin: 1px auto;
+  max-width: var(--container);
+  width: 100%;
+}
+
+
+.ab-head { margin-bottom: 14px; }
+.ab-title { font-weight: 800; line-height: 1.15; margin: 0; font-size: clamp(22px, 2.2vw, 30px); }
+.ab-by { margin-top: 8px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.ab-summary { margin: 10px 0 0; }
+
+/* --- Dark variant (Container 1) --- */
+.ab-dark { background: #222; color: #fff; padding: 16px; border: 1px solid rgba(255,255,255,.12); }
+.ab-dark .ab-by { color: rgba(255,255,255,.75); }
+.ab-dark .ab-summary { color: rgba(255,255,255,.90); font-size: 0.95rem; }
+.ab-imgLink { display:block; text-decoration:none; }
+.ab-imgbox { margin-top: 12px; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #111; border: 4px solid #333; }
+.ab-imgbox img { width:100%; height:100%; object-fit: cover; display:block; }
+
+/* red related strip for dark block */
+.ab-rel-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.ab-rel-card { display: grid; grid-template-columns: 88px 1fr; gap: 8px; text-decoration: none; padding: 8px; align-items: center; }
+.ab-rel-card--red { background: var(--red); color: #fff; }
+.ab-rel-thumb { width: 88px; height: 56px; overflow: hidden; background:#000; }
+.ab-rel-thumb img { width:100%; height:100%; object-fit: cover; }
+.ab-rel-meta { display:flex; flex-direction:column; gap:4px; }
+.ab-rel-tag { font-size: 10px; font-weight:900; letter-spacing:.04em; background: rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.25); padding: 2px 6px; border-radius: 999px; width: fit-content; }
+.ab-rel-title { font-size: 13px; font-weight: 800; line-height: 1.3; }
+
+/* --- Light variant (Container 2) --- */
+.ab-light { background: #fff; color:#111; padding: 18px; border: 1px solid rgba(0,0,0,.08); }
+.ab-light .ab-title--light { font-size: clamp(26px, 2.6vw, 36px); }
+.ab-light .ab-by--light { color: #666; }
+.ab-light .ab-summary--light { color:#444; font-size: 1rem; }
+.ab-light-grid{ display:grid; grid-template-columns: 3fr 2fr; gap: 20px; align-items: start; }
+.ab-imgLink--light { display:block; }
+.ab-imgbox--light{ width:100%; aspect-ratio: 4 / 3; overflow:hidden; background:#eee; border:1px solid rgba(0,0,0,.06); }
+.ab-imgbox--light img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ab-kicker{ color:#b0302c; font-size: 12px; font-weight: 800; margin-bottom: 6px; border-top: 2px solid #ddd; padding-top: 8px; }
+.ab-rel-row--light{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+.ab-rel-mini{ display:grid; grid-template-columns: 120px 1fr; gap: 10px; text-decoration:none; color: inherit; border-top: 1px solid rgba(0,0,0,.08); padding-top: 10px; }
+.ab-rel-mini-thumb{ width:120px; height:72px; overflow:hidden; background:#eee; border:1px solid rgba(0,0,0,.06); }
+.ab-rel-mini-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ab-rel-mini-title{ font-size: 0.92rem; font-weight: 800; line-height: 1.25; }
+.ab-rel-mini-by{ margin-top: 4px; color:#6a6a6a; font-size: 11px; }
+
+@media (max-width: 980px){
+  .ab { max-width: 820px; }
+  .ab-light-grid { grid-template-columns: 1fr; }
+  .ab-rel-row--light { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px){
+  .ab { margin: 20px auto; padding: 0 12px; }
+  .ab-dark, .ab-light { padding: 14px; }
+  .ab-rel-row { grid-template-columns: 1fr; }
+  .ab-rel-row--light { grid-template-columns: 1fr; gap: 10px; }
+  .ab-rel-mini { grid-template-columns: 100px 1fr; }
+  .ab-rel-mini-thumb { width:100px; height:64px; }
+}
+
+/* ==== Feature Hero (overlap-proof) ==== */
+.feature-hero{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  margin: 0;
+
+  /* BIGGER safe area for the teaser row (height of a card + gaps) */
+  --fh-teasers-safe: clamp(140px, 16vw, 200px);
+}
+.fh-bg{ position:absolute; inset:0; display:block; }
+.fh-bg img{ width:100%; height:100%; object-fit:cover; display:block; }
+.fh-vignette{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.45) 35%, rgba(0,0,0,.25) 60%, rgba(0,0,0,.05) 100%),
+    linear-gradient(0deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,0) 35%);
+  pointer-events:none;
+}
+
+/* TEXT BLOCK — keep above teasers and leave room at bottom */
+.fh-main{
+  position:absolute;
+  left:clamp(16px,4vw,40px);
+  top:clamp(16px,4vw,40px);
+  max-width:min(48ch,48%);
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,.6);
+
+  padding-bottom: var(--fh-teasers-safe);
+  z-index: 5;
+}
+.fh-title{
+  display:inline-block;
+  font-weight:800;
+  line-height:1.06;
+  font-size: clamp(22px, 3.2vw, 36px);
+  color:#fff; text-decoration:none;
+}
+.fh-title:hover{ text-decoration:underline; }
+.fh-byline{ margin-top:10px; font-size:clamp(11px,1.1vw,12px); letter-spacing:.04em; font-weight:700; color:rgba(255,255,255,.9); }
+.fh-summary{ margin-top:10px; font-size:clamp(12px,1.2vw,14px); line-height:1.35; color:rgba(255,255,255,.95); }
+
+/* TEASER STRIP — stays visually below the text */
+.fh-teasers{
+  position:absolute;
+  left:clamp(12px,2.8vw,24px);
+  right:clamp(12px,2.8vw,24px);
+  bottom:clamp(12px,3vw,28px);
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:clamp(8px,1.2vw,14px);
+  z-index: 2;
+}
+.fh-teaser{
+  display:grid; grid-template-columns:80px 1fr; gap:10px;
+  text-decoration:none; color:#fff;
+  background:rgba(0,0,0,.55); backdrop-filter:blur(2px);
+  border:1px solid rgba(255,255,255,.12);
+  padding:8px; box-shadow:0 6px 18px rgba(0,0,0,.26);
+}
+.fh-teaser:hover{ background:rgba(0,0,0,.65); }
+.fh-teaser-media img{ width:100%; height:56px; object-fit:cover; display:block; border:1px solid rgba(255,255,255,.14); }
+.fh-teaser-copy{ display:flex; flex-direction:column; gap:6px; }
+.fh-teaser-title{ font-weight:800; line-height:1.15; font-size:clamp(11.5px,1.1vw,13.5px); color:#fff; }
+.fh-teaser-byline{ font-size:11px; font-weight:700; letter-spacing:.03em; color:rgba(255,255,255,.9); }
+
+/* Mobile: the teaser stack gets tall; don’t keep the big safe area */
+@media (max-width:900px){
+  .feature-hero{ aspect-ratio:16/12; }
+  .fh-main{ max-width:80%; padding-bottom: 14px; }
+  .fh-teasers{ grid-template-columns:1fr; }
+  .fh-teaser{ grid-template-columns:84px 1fr; }
+}
+
+/* ====== SIZE/ALIGNMENT WRAPPER for FeatureHero ====== */
+.hero-grid{
+  display: grid;
+  grid-template-columns:
+    minmax(var(--gutter), 1fr)
+    minmax(0, var(--container))
+    minmax(var(--gutter), 1fr);
+}
+.hero-grid > .feature-hero{
+  grid-column: 2;
+  width: 100%;
+  height: var(--hero-height);
+  aspect-ratio: auto;
+  margin: 8px 0 0;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.hero-grid.narrow{
+  grid-template-columns:
+    minmax(var(--gutter), 1fr)
+    minmax(0, 900px)
+    minmax(var(--gutter), 1fr);
+}
+@media (max-width: 900px){
+  .hero-grid > .feature-hero{
+    height: auto;
+    aspect-ratio: 16 / 12;
+  }
+}
+
+/* Side list should be the positioning context */
+.side-list { position: relative; }
+
+/* The moving yellow background bar */
+.side-hi-bg{
+  position: absolute;
+  left: 0;                      /* <-- was 8px; now reaches under the thumb */
+  right: 0;                     /* <-- was 8px */
+  border-radius: 12px;
+  background:#000080;         /* bright, solid yellow */
+  box-shadow: 0 6px 16px rgba(0,0,0,.25), inset 0 -1px 0 rgba(0,0,0,.12);
+  z-index: 0;                   /* behind items */
+  transition:
+    top 360ms cubic-bezier(.25,.9,.2,1),
+    height 300ms cubic-bezier(.25,.9,.2,1);
+}
+
+
+/* Make list items render above the sliding bar */
+.side-item{ position: relative; z-index: 1; }
+
+/* Remove the old per-item yellow bg if you had it */
+.side-item.hi{ background: transparent; border-color: transparent; }
+
+.side-item .si-title{ transition: color .2s ease, font-weight .2s ease; }
+.side-item.is-current .si-title{
+  color: #141414;               /* dark text over bright yellow */
+  font-weight: 800;
+}
+
+/* ==== FINAL: Right Sidebar lists (Top + Trending) ==== */
+/* force list to stretch full height of its container */
+.feat-side .side-list {
+  flex: 1;                           /* grow to fill */
+  justify-content: space-between;    /* spread items evenly */
+}
+
+.feat-side .side-item { min-width: 0; }
+
+/* one row = [thumb] [title] */
+.feat-side .side-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;                   /* tighter spacing */
+  padding: 4px;               /* tighter padding */
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+}
+.feat-side .side-link:hover { background: rgba(255,255,255,.06); }
+
+/* smaller thumbnail so 3 rows fit comfortably */
+.feat-side .side-thumb {
+  width: 68px;                /* was 96px */
+  height: 52px;               /* was 72px */
+  object-fit: cover;
+  border-radius: 10px;
+  flex: 0 0 auto;
+  display: block;
+  background:#101418;
+  border: 1px solid var(--panel-stroke);
+}
+
+/* smaller title so 3 rows fit; keep to 2 lines max */
+.feat-side .side-title{
+  font-weight: 800;
+  font-size: 12px;            /* was 14px */
+  line-height: 1.2;
+  color: var(--panel-ink);
+  min-width: 0;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Divider between items in Top/Trending */
+.feat-side .side-item + .side-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+/* ===== Highlighter sweep (left -> right) for first title =====
+   (Consolidated — remove earlier duplicate/old highlight rules) */
+.feat-side .side-title .hl-sweep {
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(
+    0deg,
+    rgba(29,154,142,0.65),
+    rgba(29,154,142,0.65)
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 85%;         /* thicker band */
+  background-position: 0 60%;
+  border-radius: 4px;
+  padding: 2px 0;                  /* slight bleed */
+  text-shadow: 0 0 2px rgba(0,0,0,0.5); /* keep text readable */
+}
+
+/* sweep animation */
+@keyframes tvHighlightSweep {
+  0%   { background-size: 0% 85%; }
+  10%  { background-size: 10% 85%; }
+  100% { background-size: 100% 85%; }
+}
+
+/* run state: animate only background, do NOT recolor text */
+.feat-side .side-title .hl-sweep.run {
+  animation: tvHighlightSweep 1.2s ease-out forwards;
+}
+
+/* =================== Timely Voice — White Article Card =================== */
+/* Uses your brand tokens. Designed to match the mock: off-white, soft shadow,
+   teal strip, right image, 4 related items with thumbs. */
+
+:root{
+  --awb-bg: #222;                         /* match Featured bg */
+  --awb-ink: #e6eef6;                     /* light ink on dark bg */
+  --awb-ink-muted: #cfd9e3;               /* softer ink */
+  --awb-border: rgba(255,255,255,.12);    /* same border tone */
+   --world-underline: rgba(255,255,255,.9); /* tweak if you want softer */
+  --mid-img-h: 240px;               /* image height for the center card */
+  --mid-copy-h: 120px;     
+  --awb-gap: 26px;                         /* match your .awb-grid column-gap */
+  --awb-sep: rgba(255,255,255,.12);  
+}
+
+
+.awb{
+  background: var(--awb-bg);
+  color: var(--awb-ink);
+  border: 1px solid var(--awb-border);
+  border-radius: 12px;
+  box-shadow: var(--awb-shadow);
+  max-width: 100%;     /* was var(--container) */
+  margin: 22px 0;      /* remove auto-centering; wrapper centers it */
+  padding: 16px 18px 14px; /* keep your internal padding */
+}
+
+/* 3 columns: L (opinions) / C (featured) / R (trending)  */
+.awb-grid{
+  display: grid;
+  grid-template-columns: minmax(240px, 1.05fr) minmax(0, 1.9fr) minmax(240px, 1.05fr);
+  gap: 22px;                 /* base gap */
+  column-gap: var(--awb-gap);
+  align-items: stretch;
+  position: relative;
+}
+.awb-col{ position: relative; min-width: 0; overflow: visible; }
+.awb-mid{ z-index: 1; }      /* render center above neighbors a bit */
+
+
+.awb-mid::before,
+.awb-right::before{
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: calc(-0.5 * var(--awb-gap));  /* centers the line in the gutter */
+  width: 1px;
+  background: var(--awb-sep);
+  pointer-events: none;               /* don't block clicks */
+}
+.awb-h{
+  margin: 0 0 10px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(0,0,0,.65);
+}
+
+/* ---------- LEFT: Opinions ---------- */
+.op-list{
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 12px;
+}
+.op-item{ min-width: 0; }
+.op-link{
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background .18s ease;
+  background-clip: padding-box;
+}
+.op-link:hover{ background: rgba(0,0,0,.035); }
+.op-thumb{
+  width: 74px; height: 54px; border-radius: 8px; overflow: hidden;
+  background: #e9edf2; border: 1px solid rgba(0,0,0,.06);
+}
+.op-thumb img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.op-copy{ min-width: 0; }
+.op-title{
+  font-weight: 800; line-height: 1.28;
+  font-size: 14px; color: var(--awb-ink);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.op-time{
+  margin-top: 4px; font-size: 11px;
+  color: rgba(0,0,0,.55); letter-spacing: .03em; font-weight: 700;
+}
+
+/* === AWB: make all time stamps white === */
+.awb .op-time,
+.awb .mid-time {
+  color: #fff;        /* crisp white on the dark card */
+  opacity: .82;       /* optional: soften a touch; remove if you want pure white */
+}
+
+/* === AWB center article sizing (desktop/tablet) === */
+@media (min-width: 642px){
+  /* taller image */
+  .awb .mid-figure{
+    height: 240px;              /* was 180px */
+  }
+
+  /* smaller headline */
+  .awb .mid-title{
+    font-size: clamp(18px, 1.9vw, 22px);  /* was clamp(20px,2.2vw,26px) */
+    line-height: 1.18;
+    margin: 4px 0 2px;
+  }
+
+  /* smaller summary */
+  .awb .mid-summary{
+    font-size: 0.90rem;         /* was 0.95rem */
+    line-height: 1.35;
+    margin: 0 0 6px;
+  }
+}
+
+/* future-proof: if you add a time in trending */
+.awb .tr-time { color: #fff; opacity: .82; }
+
+/* === AWB: hide the column headings (Opinions / Featured / Trending) === */
+.awb .awb-h{
+  display: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ---------- CENTER: Featured / Latest ---------- */
+.mid-hero{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+.mid-figure{
+  display:block;
+  width:100%;
+  height: var(--mid-img-h);
+  margin: 0 0 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  background:#e9edf2;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+.mid-figure img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+
+/* Title / summary / time (ensure they’re visible and spaced) */
+.mid-title{
+  margin: 0 0 4px;
+  font-weight: 900;
+  font-size: clamp(18px, 1.9vw, 22px);
+  line-height: 1.18;
+  color: #e6eef6;
+}
+.mid-summary{
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: #cfd9e3;
+}
+.mid-time{
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+  opacity: .82;
+}
+
+@media (max-width: 640px){
+  .mid-rotator{ min-height: unset; }
+  .mid-slide{ position: static; opacity: 1; transform: none; pointer-events: auto; }
+  .mid-figure{ height: 200px; border-radius: 10px; }
+}
+/* ---------- RIGHT: Trending ---------- */
+.tr-list{
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 8px;
+}
+.tr-item{ min-width: 0; }
+.tr-link{
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none; color: inherit;
+  padding: 6px; border-radius: 10px;
+  transition: background .18s ease;
+  background-clip: padding-box;  /* keep pill inside its column */
+}
+.tr-link:hover{ background: rgba(0,0,0,.035); }
+.tr-thumb{
+  width: 56px; height: 56px; border-radius: 10px; overflow: hidden;
+  background: #e9edf2; border: 1px solid rgba(0,0,0,.06);
+}
+.tr-thumb img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.tr-title{
+  font-weight: 800; line-height: 1.25;
+  font-size: 13.5px; color: var(--awb-ink);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* gentle inner guards so text/tiles don't touch the grid line */
+.awb-right{ padding-left: 2px; }
+.awb-left  { padding-right: 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px){
+  .awb-grid{
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 18px;
+    column-gap: 22px;
+  }
+}
+@media (max-width: 641px){
+ .awb{ padding-left: 16px; padding-right: 16px; }
+  .awb-grid{ grid-template-columns: 1fr; gap: 16px; }
+  .awb-mid{ order: 1; }
+  .awb-left{ order: 2; }
+  .awb-right{ order: 3; }
+  .mid-figure{ border-radius: 10px; height: 200px; }  /* a bit taller on small screens */
+}
+@media (max-width: 640px){
+  .op-link{ grid-template-columns: 66px 1fr; gap: 8px; }
+  .op-thumb{ width: 66px; height: 48px; border-radius: 8px; }
+  .tr-link{ grid-template-columns: 52px 1fr; gap: 8px; }
+  .tr-thumb{ width: 52px; height: 52px; border-radius: 8px; }
+}
+
+/* on stacked layouts, hide the vertical lines */
+@media (max-width: 900px){
+  .awb-mid::before,
+  .awb-right::before{ display: none; }
+}
+
+/* Plain section label for WORLD (no banner) */
+.tv-section-title.tv-plain{
+  display: inline-block;            /* shrink to text width */
+  width: fit-content;               /* ensure underline = word width */
+  margin: 6px 10px 12px;            /* keep your spacing */
+  padding-bottom: 4px;              /* room for the line */
+  border-bottom: 4px solid #1D9A8E;
+
+  text-align: left;
+  font-family: Anton, Impact, Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
+  font-weight: 400;                 /* match site masthead weight */
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;           /* spaced look you used */
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.28);
+  font-size: clamp(28px, 3.2vw, 40px);  /* min..preferred..max (fixed order) */
+  line-height: 1.05;
+}
+/* SPORTS heading = same style as WORLD, but yellow underline */
+.tv-section-title.tv-plain.sports-title{
+  border-bottom-color: var(--hi-yellow);
+  /* or use the full shorthand if you prefer: */
+  /* border-bottom: 4px solid var(--hi-yellow); */
+}
+
+
+/* keep section width alignment the same */
+.section-wrap{ max-width: var(--container); margin: 0 auto; padding: 0 16px; }
+
+/* (optional) bump the white block down a touch if needed */
+.awb{ margin-top: 8px; }
+
+/* ===== Center rotator (Featured) ===== */
+.mid-rotator{
+  position: relative;
+  min-height: calc(var(--mid-img-h) + var(--mid-copy-h));
+  isolation: isolate;               /* keeps z-index sane */
+}
+
+/* on smaller screens a touch shorter */
+@media (max-width: 641px){
+  .mid-rotator{ min-height: 320px; }
+}
+
+/* each slide sits on top of the other and fades/swipes in */
+.mid-slide{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events: none;             /* inactive slides are not clickable */
+}
+
+.mid-slide.is-active{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* respects users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .mid-slide, .mid-slide.is-active{
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ===== Highlight sweep for rotating center title ===== */
+.mid-title .hl-sweep{
+  position: relative;
+  display: inline;
+  /* teal highlight band */
+  background-image: linear-gradient(
+    0deg,
+    rgba(29,154,142,0.70),
+    rgba(29,154,142,0.70)
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 78%;          /* start collapsed */
+  background-position: 0 64%;       /* sits behind the text baseline */
+  border-radius: 4px;
+  padding: 2px 0;                   /* lets color bleed slightly above/below */
+}
+
+/* trigger the sweep whenever a slide becomes active */
+.mid-slide.is-active .mid-title .hl-sweep{
+  animation: midTitleSweep 1000ms ease-out forwards;
+}
+
+/* accessible: no motion for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .mid-slide.is-active .mid-title .hl-sweep{
+    animation: none;
+    background-size: 100% 78%;
+  }
+}
+
+@keyframes midTitleSweep{
+  0%   { background-size: 0% 78%; }
+  15%  { background-size: 12% 78%; }
+  100% { background-size: 100% 78%; }
+}
+
+
+.spotlight-rotator{
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--awb-border);
+  background: #0f1417;
+  aspect-ratio: 9 / 16;      /* tall portrait */
+  width: 100%;
+  /* ensure it doesn’t collapse if browser lacks aspect-ratio */
+  min-height: 420px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12) inset;
+}
+
+/* image fills the card */
+.spot-imgbox{ position:absolute; inset:0; }
+.spot-imgbox img{
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+
+/* darken bottom for readability */
+.spot-card::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,.08) 20%,
+    rgba(0,0,0,.45) 60%,
+    rgba(0,0,0,.72) 100%
+  );
+  pointer-events: none;
+}
+
+/* Stack spotlight slides and fade the active one in */
+.spotlight-rotator { position: relative; }
+
+.spot-card{
+  position: absolute;          /* stack them */
+  inset: 0;
+  opacity: 0;                  /* hidden by default */
+  transform: translateY(6px);  /* tiny motion, optional */
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;        /* not clickable while hidden */
+}
+
+.spot-card.is-active{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* brand badge top-left */
+.spot-top{ position:absolute; left:10px; top:10px; z-index:2; }
+.spot-brand{
+  display:inline-block;
+  font-size: 12px; font-weight: 900; letter-spacing:.02em;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.25);
+  text-transform: lowercase;
+}
+
+/* title bottom */
+.spot-bottom{ position:absolute; left:12px; right:12px; bottom:12px; z-index:2; }
+.spot-title{
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.35);
+  line-height: 1.18;
+  font-size: clamp(13px, 1.4vw, 16px);
+}
+
+/* fallback box if no slides are provided */
+.spot-fallback{
+  position:absolute; inset:0;
+  background: #12181c;
+}
+
+@media (max-width: 900px){
+  .spotlight-rotator{ aspect-ratio: 3 / 4; min-height: 360px; }
+}
+@media (max-width: 640px){
+  .spotlight-rotator{ aspect-ratio: 4 / 5; min-height: 320px; }
+}
+
+/* --- Spotlight: keep a sane, fixed height on desktop --- */
+:root{
+  /* tune once and you're done; 300–360px usually looks great */
+  --spot-h: 320px;
+}
+
+/* the rotator itself defines the height; slides are stacked inside */
+.spotlight-rotator{
+  position: relative;
+  height: var(--spot-h);          /* <— controls vertical size */
+}
+
+/* slides stay stacked & fade (you already have opacity/transition rules) */
+.spot-card{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;
+}
+.spot-card.is-active{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* media fills the fixed height; crop with cover */
+.spot-media{
+  width: 100%;
+  height: 100%;                    /* <— replace any aspect-ratio here */
+  border-radius: 12px;
+  overflow: hidden;
+}
+.spot-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;               /* crop top/bottom as needed */
+  object-position: center;
+}
+
+/* optional: a touch taller on very wide screens */
+@media (min-width: 1280px){
+  .spotlight-rotator{ height: 360px; }
+}
+
+/* optional: when layout stacks on mobile, make it shorter */
+@media (max-width: 900px){
+  .spotlight-rotator{ height: 220px; }
+}
+
+/* Center article summary: show up to 5 lines */
+.awb .mid-slide .mid-summary,
+.awb .mid-summary{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;   /* <- was fewer; now 5 lines */
+          line-clamp: 5;   /* non-webkit fallback */
+  overflow: hidden;
+
+  /* keep these in sync with your existing text styling */
+  line-height: 1.55;
+  font-size: 0.90rem;
+
+  /* reserve space so slides don't change height between items */
+  max-height: calc(1.35em * 5);
+}
+/* === AWB center image size + text spacing (replace your current rules) === */
+
+/* Base: keep corners/boarder, just increase height a bit */
+.awb .mid-figure{
+  display:block;
+  width:100%;
+  height: 220px;                 /* base (mobile-ish) */
+  margin: 0 0 10px 0;            /* small gap under image */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e9edf2;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.awb .mid-figure img{
+  width:100%; height:100%;
+  object-fit:cover; object-position:center; display:block;
+}
+
+/* Wide desktop: a touch taller again (optional) */
+@media (min-width: 1200px){
+  .awb .mid-figure{ height: 320px; }
+}
+
+/* Title / Summary / Time spacing */
+.awb .mid-title{
+  margin: 12px 0 8px;            /* more top & bottom space */
+  font-weight: 900;
+  font-size: clamp(18px, 1.9vw, 22px);
+  line-height: 1.18;
+}
+.awb .mid-summary{
+  margin: 0 0 10px;              /* space below title and above time */
+  color: var(--awb-ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; /* keeps 5 lines */
+}
+.awb .mid-time{
+  margin-top: 8px;               /* space above time */
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;                    /* you already wanted white */
+  opacity: .82;
+}
+
+/* ---- center image height (the only place to tune) ---- */
+:root{ --mid-img-h: 220px; }                /* mobile/base */
+@media (min-width:642px){ :root{ --mid-img-h: 290px; } }   /* tablet/desktop */
+@media (min-width:1200px){ :root{ --mid-img-h: 320px; } }  /* wide desktop */
+
+
+/* ===== ArticleBlockDark — new 2-col layout with divider ===== */
+.ab .ab-layout{
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) 1px minmax(320px, 1.06fr);
+  gap: 8px;
+  align-items: start;
+}
+
+/* center 1px divider */
+.ab .ab-divider{
+  width: 1px;
+  background: var(--line, rgba(255,255,255,.15));
+}
+
+/* left column tweaks */
+.ab .ab-main{ min-width: 0; }
+.ab-dark .ab-imgLink{ display:block; margin-bottom: 12px; }
+/* round the image and drop the thick border from the old style */
+/* SIZE TWEAK HERE if you want */
+/* Make the left image column feel like the sports hero */
+.ab-dark .ab-imgbox{
+  aspect-ratio: 16 / 9;   /* keep the same look */
+  height: auto;
+  min-height: 455 px;      /* sports .sport-hero fallback = 360px */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+.ab-dark .ab-imgbox img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* optional: hide byline for this block (mock shows title+summary only) */
+/* .ab-dark .ab-by{ display:none; } */
+
+/* right column: stack the red related cards vertically */
+.ab .ab-sidebar{ min-width: 0; }
+.ab .ab-sidebar .ab-rel-row{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 0;         /* we already have spacing via layout */
+}
+
+/* card = red, thumb + copy */
+.ab .ab-sidebar .ab-rel-card{
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  height: 96px;  
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.ab .ab-sidebar .ab-rel-card--red{
+  background: var(--red);
+  color: #fff;
+}
+.ab .ab-sidebar .ab-rel-thumb{
+  width: 72px; height: 56px; overflow:hidden; border-radius:6px; background:#000;
+}
+.ab .ab-sidebar .ab-rel-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ab .ab-sidebar .ab-rel-meta{ min-width:0; display:flex; flex-direction:column; gap:4px; }
+.ab .ab-sidebar .ab-rel-tag{
+  display:inline-block; margin-bottom: 2px;
+  font-size:10px; font-weight:900; letter-spacing:.04em;
+  background: rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.25);
+  padding:2px 6px; border-radius:999px; width:fit-content;
+}
+.ab .ab-sidebar .ab-rel-title{
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;        /* keep to two lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* responsive: stack whole block */
+@media (max-width: 780px){
+  .ab .ab-layout{
+    grid-template-columns: 1fr;     /* drop sidebar under main */
+    gap: 14px;
+  }
+  .ab .ab-divider{ display:none; }
+}
+
+/* ArticleBlockDark tweaks */
+.ab-dark .ab-imgbox { margin-top: 0; }   /* remove top gap above the image */
+/* Show only the title on the dark card (match the mock) */
+.ab-dark .ab-by,
+.ab-dark .ab-summary { display: none; }
+/* Make the headline a bit smaller on this block only */
+.ab-dark .ab-title { font-size: clamp(20px, 2.1vw, 26px); }
+
+/* === ArticleBlockDark: title overlay inside image + shorter image === */
+
+/* make the image box a positioning context */
+.ab-dark .ab-main { position: relative; }
+.ab-dark .ab-imgbox {
+  position: relative;
+  height: 380px;     /* increased from 260px */
+  aspect-ratio: auto;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+
+/* darken the lower half of the photo so text is readable */
+.ab-dark .ab-imgbox::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%);
+  pointer-events:none;
+}
+.ab-dark .ab-head{
+  position: absolute;
+  left: 16px; right: 16px; bottom: 14px;
+  margin: 0; padding: 0; z-index: 2;
+}
+.ab-dark .ab-title{
+  color:#fff; margin:0; line-height:1.15;
+  font-size: clamp(20px, 2.1vw, 28px);
+  text-shadow: 0 2px 8px rgba(0,0,0,.55);
+}
+
+
+/* hide byline/summary for this card (overlay design shows only title) */
+.ab-dark .ab-by,
+.ab-dark .ab-summary{ display:none; }
+
+/* remove any extra top gap on the image */
+.ab-dark .ab-imgbox { margin-top: 0; }
+
+/* mobile tweak: a bit shorter and tighter paddings */
+@media (max-width: 640px){
+  .ab-dark .ab-imgbox{ height: 240px; }  /* was 200px */
+  .ab-dark .ab-head{ left:12px; right:12px; bottom:12px; }
+}
+
+/* Solid red bar behind every wrapped line of the title */
+.ab-dark .ab-title > span{
+  display: inline;
+  background: var(--red);
+  padding: 122px 6px;                 /* inner breathing room */
+  box-decoration-break: clone;      /* make each wrapped line its own red block */
+  -webkit-box-decoration-break: clone; /* Safari */
+}
+
+/* ===== ArticleBlockDark — Overlay title with red line blocks ===== */
+
+/* Size of the image — tweak height to taste (e.g., 320–380px) */
+.ab-dark .ab-imgbox--overlay{
+  position: relative;
+  height: 425px;                 /* ← adjust this to make taller/shorter */
+  aspect-ratio: auto;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.ab-dark .ab-imgbox--overlay img{
+  width:100%; height:100%; display:block; object-fit:cover;
+}
+
+/* Darken bottom so text reads well */
+.ab-dark .ab-imgbox--overlay::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%);
+  pointer-events:none;
+}
+
+/* Title overlay position */
+.ab-dark .ab-img-overlay{
+  position:absolute;
+  left:16px; right:16px; bottom:14px;
+  z-index:2;
+}
+
+/* Headline styling */
+.ab-dark .ab-title{
+  margin:0;
+  font-weight:900;
+  line-height:1.18;
+  font-size: clamp(20px, 2.2vw, 28px);
+  color:#fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,.55);
+}
+
+/* Solid red block per wrapped line (the important trick) */
+.ab-dark .ab-title > span{
+  display:inline;
+  background: var(--red);
+  padding: 3px 8px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone; /* Safari */
+}
+
+/* Optional: on small screens make the image a bit shorter */
+@media (max-width: 640px){
+  .ab-dark .ab-imgbox--overlay{ height: 240px; }
+}
+
+/* tabs should be above everything in the masthead stack */
+.tv-tabsbar {
+  position: relative;
+  z-index: 30;            /* higher than ticker */
+}
+
+/* the red ticker stays below and doesn’t capture clicks except its own links */
+.tv-vticker, .red-ticker {   /* use your exact class for the red bar if different */
+  position: relative;
+  z-index: 10;
+  pointer-events: none;      /* prevents stealing clicks */
+}
+.tv-vticker a, .red-ticker a {
+  pointer-events: auto;      /* links inside remain clickable if you have any */
+}
+
+/* 1) Don’t lock body to exactly 100% height */
+html, body {
+  min-height: 100%;
+  height: auto;          /* <- instead of height: 100% */
+}
+
+/* 2) Don’t make a sticky inside the sticky header.
+   Use fixed for the compact bar. It won’t affect the scroll container. */
+.tv-compactbar{
+  position: fixed;       /* <- was sticky */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+}
+
+/* 3) Make sure the red ticker can’t intercept scroll/pointer
+   (you already added something similar, keep it on). */
+.tv-vticker{
+  pointer-events: none;
+}
+.tv-vticker *{
+  pointer-events: auto;  /* links still work */
+}
+
+/* App.css */
+.section-tight { padding: 12px 16px 24px; }  /* no big top gap */
+
+.sports-wrap { 
+  position: relative; 
+  overflow: visible; /* make sure blur isn't clipped */
+}
+
+/* The backdrop "sun" */
+.sports-wrap .sports-spot{
+  position: absolute;
+  top: -6rem;              /* pull up a bit so it peeks behind the title */
+  left: -6rem;             /* nudge left for nicer composition */
+  width: 120vmin;
+  height: 120vmin;
+  border-radius: 50%;
+  /* stronger, hotter center and smoother falloff */
+  background: radial-gradient(circle at 40% 30%, rgba(255,213,74,0.9), rgba(255,153,0,0.55) 40%, transparent 70%);
+  transform-origin: 0 0;   /* scale from the top-left corner */
+  transform: scale(var(--sports-spot-scale, 0));
+  opacity: var(--sports-spot-opacity, 0);
+  filter: blur(40px);
+  z-index: 0;              /* behind the content */
+  pointer-events: none;
+}
+
+/* ensure the title + grid sit above the spot */
+.sports-title,
+.sports-grid { 
+  position: relative; 
+  z-index: 1; 
+}
+
+/* route fade-in */
+.route-fade {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .28s ease, transform .28s ease;
+  will-change: opacity, transform;
+}
+
+.route-fade.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Feature Essay tweaks (optional) */
+.feature-essay .fe-wrap { box-sizing: border-box; }
+.feature-essay img { -webkit-user-drag: none; }

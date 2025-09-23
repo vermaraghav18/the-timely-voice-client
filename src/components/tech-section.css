@@ -1,0 +1,338 @@
+/* ======= TECH SECTION (scoped) ======= */
+:root{
+  /* Brand palette */
+  --brand: #1D9A8E;
+  --accent: #FF6B35;
+  --accent2: #FFC947;
+  --secondary: #1B4965;
+
+  /* Dark theme */
+  --bg: #0f1316;
+  --panel: #12181d;
+  --panel-2: #0e1419;
+  --ink: #ffffff;
+  --ink-weak: rgba(255,255,255,.82);
+  --line: rgba(255,255,255,.14);
+
+  --shadow: 0 10px 28px rgba(0,0,0,.28);
+
+  --container: 1280px;
+  --gutter: 24px;
+  --radius: 14px;
+
+  /* Tech accent (bluish / purple) */
+  --tech: #5666FF;
+}
+
+/* container */
+.tech-wrap{
+  position: relative;        /* for bg dot */
+  isolation: isolate;        /* keep dot behind content */
+  overflow: visible;         /* allow dot to overflow */
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 32px 16px 40px;
+  color: var(--ink);
+}
+
+/* === NEW: Blue background circle that scales with scroll === */
+.tech-bg-dot{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1200px;
+  height: 1200px;
+  transform: translate(-50%, -50%) scale(var(--techDotScale, 0));
+  transform-origin: center center;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(86,102,255,.28),
+      rgba(86,102,255,.16) 40%,
+      rgba(86,102,255,.08) 60%,
+      transparent 72%);
+  filter: blur(.25px);
+  transition: transform 320ms cubic-bezier(.25,.9,.2,1);
+  pointer-events: none;
+  z-index: -1;               /* behind all content */
+}
+
+/* ===== header ===== */
+.tech-header{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 22px;
+}
+
+.tech-title h2{
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: .9;
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.title-underline{
+  display: block;
+  height: 6px;
+  width: 70%;
+  background: linear-gradient(90deg, var(--tech), transparent);
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.tech-pills{
+  align-self: center;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pill{
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--ink-weak);
+  border: 1px solid var(--line);
+  font-weight: 600;
+  letter-spacing: .2px;
+  cursor: pointer;
+}
+.pill.active{
+  color: var(--ink);
+  border-color: rgba(86,102,255,.6);
+  box-shadow: 0 0 0 1px rgba(86,102,255,.3) inset, 0 8px 18px rgba(86,102,255,.16);
+  background: rgba(86,102,255,.08);
+}
+
+.tech-updated{
+  justify-self: end;
+  align-self: center;
+  color: var(--ink-weak);
+  font-size: 14px;
+}
+
+/* ===== main grid ===== */
+.tech-grid{
+  display: grid;
+  grid-template-columns: 2.2fr 1.4fr 1.3fr;
+  gap: var(--gutter);
+  align-items: stretch;
+}
+
+/* Make each direct column a flex column so the bases line up */
+.tech-grid > *{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* --- Featured (left) --- */
+.media{
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.featured-media{ aspect-ratio: 16 / 9; box-shadow: var(--shadow); }
+
+.chip{
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: rgba(86,102,255,.14);
+  color: #dfe2ff;
+  border: 1px solid rgba(86,102,255,.35);
+  backdrop-filter: blur(4px);
+}
+.chip-solid{
+  top: 16px; bottom: auto;
+  background: var(--tech);
+  color: #fff;
+  border: none;
+}
+
+.featured-title{
+  margin: 16px 0 8px;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.18;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+.featured-dek{
+  color: var(--ink-weak);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 12px;
+  max-width: 95%;
+}
+.featured-meta{
+  font-size: 12px;
+  color: var(--ink-weak);
+  margin-bottom: 8px;
+}
+
+/* ===== Featured: Rotating banner under the main article ===== */
+.feature-rotator{
+  position: relative;
+  margin-top: 10px;
+  aspect-ratio: 21 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.rot-img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity .5s ease, transform .6s ease;
+  filter: brightness(.95);
+}
+.rot-img.active{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- Middle column --- */
+.stack-col{
+  display: flex;
+  flex-direction: column;
+  gap: 95px;
+  flex: 1 1 auto;
+}
+.stack-card{
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+.stack-media{ aspect-ratio: 4 / 3; }
+.stack-title{
+  margin: 12px 2px 2px;
+  font-size: 21px;
+  line-height: 1.32;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- Right column (sidebar) --- */
+.side-col{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1 1 auto;
+}
+.side-panel{
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.panel-title{
+  margin: 0 0 12px;
+  font-size: 19px;
+  font-weight: 900;
+}
+.panel-list{ margin: 0; padding-left: 18px; }
+.panel-list li{
+  margin: 12px 0;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.tech-card {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: var(--shadow);
+
+  /* Increase size */
+  aspect-ratio: 4 / 5;   /* taller cards */
+  max-height: 280px;     /* raise height */
+}
+
+
+.tech-label {
+  color: #fff;
+  font-family: "Impact", Anton, Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  
+  /* smaller size */
+  font-size: clamp(20px, 2.6vw, 32px); 
+  letter-spacing: 0.12rem;
+}
+
+/* Make TECH heading smaller */
+.tech-title h2 {
+  color: #fff;
+  font-family: "Impact", Anton, Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(50px, 2.6vw, 64px); /* ↓ smaller than before */
+  letter-spacing: 0.25rem;              /* a bit tighter */
+  margin: 0;                             /* no extra gap */
+}
+
+/* Underline size + spacing below the title */
+.title-underline {
+  height: 3px;
+  width: 120px;
+  margin-top: 6px; /* ↓ reduce to tighten the gap */
+  background: linear-gradient(90deg, #3a63ff, #5aa9ff);
+  border-radius: 999px;
+}
+
+
+.tech-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Keep bases aligned */
+.feature-rotator,
+.stack-card:last-child,
+.side-panel:last-child{ margin-bottom: 0; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1279px){
+  .tech-grid{
+    gap: 20px;
+    grid-template-columns: 2fr 1.3fr 1.2fr;
+  }
+}
+@media (max-width: 1023px){
+  .tech-header{ grid-template-columns: 1fr; align-items: start; }
+  .tech-updated{ justify-self: start; }
+  .tech-grid{ grid-template-columns: 1.7fr 1.3fr; }
+  .side-col{ order: 2; }
+  .stack-col{ order: 1; }
+}
+@media (max-width: 767px){
+  .tech-grid{ grid-template-columns: 1fr; }
+  .tech-title h2{ font-size: clamp(38px, 12vw, 56px); }
+  .title-underline{ width: 64%; }
+  .featured-title{ font-size: clamp(20px, 7vw, 26px); }
+}

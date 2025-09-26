@@ -8,7 +8,7 @@ const API_BASE =
   import.meta.env.VITE_API_URL ||
   "http://localhost:4000";
 
-/* ---------- map admin ArticleBlockLight settings ---------- */
+/* ---------- map admin ArticleBlockLight / World settings ---------- */
 function mapABLFromAdmin(cfg) {
   const safe = {
     featured: { title: "", summary: "", image: "", alt: "", href: "#", time: "" },
@@ -169,20 +169,40 @@ const demoLandscape = [
 
 export default function WorldPage() {
   const [ablCfg, setAblCfg] = useState(null);
+
   useEffect(() => {
     (async () => {
+      // 1) Try the new dedicated settings key first
       try {
-        const res = await fetch(`${API_BASE}/api/settings/articleBlockLight`, {
+        const resWorld = await fetch(`${API_BASE}/api/settings/world`, {
           credentials: "include",
           headers: { "Content-Type": "application/json" },
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        setAblCfg(await res.json());
+        if (resWorld.ok) {
+          const json = await resWorld.json();
+          if (json && Object.keys(json || {}).length) {
+            setAblCfg(json);
+            return; // ✅ use /settings/world
+          }
+        }
+      } catch (_) {
+        // ignore and fall back
+      }
+
+      // 2) Backward-compat: fall back to the old key you used before
+      try {
+        const resABL = await fetch(`${API_BASE}/api/settings/articleBlockLight`, {
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!resABL.ok) throw new Error(`HTTP ${resABL.status}`);
+        setAblCfg(await resABL.json());
       } catch {
         setAblCfg(null);
       }
     })();
   }, []);
+
   const abl = useMemo(() => mapABLFromAdmin(ablCfg), [ablCfg]);
 
   const latest = abl.latestGrid?.length ? abl.latestGrid : demoLatest;
@@ -212,12 +232,11 @@ export default function WorldPage() {
               border: "1px solid var(--tv-border)",
               textDecoration: "none",
               color: "inherit",
-              /* THE ONE TRUE RADIUS: put it on the card, let everything clip inside it */
               borderRadius: 12,
               overflow: "hidden",
             }}
           >
-            <div style={{ aspectRatio: "16/10" /* no radius here */ }}>
+            <div style={{ aspectRatio: "16/10" }}>
               <img
                 src={it.image}
                 alt={it.title}
@@ -258,12 +277,11 @@ export default function WorldPage() {
                 color: "inherit",
                 background: "var(--tv-bg-soft)",
                 border: "1px solid var(--tv-border)",
-                /* ONE radius here as well (on the anchor that wraps both columns) */
                 borderRadius: 12,
                 overflow: "hidden",
               }}
             >
-              <div style={{ aspectRatio: "16/10" /* no radius here */ }}>
+              <div style={{ aspectRatio: "16/10" }}>
                 <img
                   src={it.image}
                   alt={it.title}

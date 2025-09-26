@@ -1,5 +1,6 @@
 // client/src/pages/WorldPage.jsx
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import ArticleBlockLight from "../components/ArticleBlockLight.jsx";
 import "../App.css";
 
@@ -14,6 +15,22 @@ const hrefFrom = (href, slug) => {
   if (slug) return `/article/${encodeURIComponent(slug)}`;
   return "#";
 };
+
+/* ---------- choose <Link> for internal, <a> for external ---------- */
+function SmartLink({ href, children, ...rest }) {
+  const isInternal = href && href.startsWith("/");
+  if (isInternal) return <Link to={href} {...rest}>{children}</Link>;
+  return (
+    <a
+      href={href || "#"}
+      target={href && !href.startsWith("/") ? "_blank" : undefined}
+      rel={href && !href.startsWith("/") ? "noopener noreferrer" : undefined}
+      {...rest}
+    >
+      {children}
+    </a>
+  );
+}
 
 /* ---------- map admin ArticleBlockLight / World settings ---------- */
 function mapABLFromAdmin(cfg) {
@@ -33,7 +50,7 @@ function mapABLFromAdmin(cfg) {
     summary: hero.summary || "",
     image: hero.image || hero.imageUrl || "",
     alt: hero.title || "",
-    href: hrefFrom(hero.href, hero.slug), // ← supports slug
+    href: hrefFrom(hero.href, hero.slug),
     time: hero.time || "",
   };
 
@@ -44,7 +61,7 @@ function mapABLFromAdmin(cfg) {
         time: s?.time || "",
         image: s?.image || s?.imageUrl || "",
         alt: s?.alt || s?.title || "",
-        href: hrefFrom(s?.href, s?.slug), // ← supports slug
+        href: hrefFrom(s?.href, s?.slug),
       }))
     : [];
 
@@ -56,7 +73,7 @@ function mapABLFromAdmin(cfg) {
           time: n?.time || "",
           image: n?.image || n?.imageUrl || "",
           alt: n?.alt || n?.title || "",
-          href: hrefFrom(n?.href, n?.slug), // ← supports slug
+          href: hrefFrom(n?.href, n?.slug),
         }))
       : [],
   };
@@ -67,7 +84,7 @@ function mapABLFromAdmin(cfg) {
         title: n?.title || "",
         image: n?.image || n?.imageUrl || "",
         alt: n?.alt || n?.title || "",
-        href: hrefFrom(n?.href, n?.slug), // ← supports slug
+        href: hrefFrom(n?.href, n?.slug),
       }))
     : [];
 
@@ -75,7 +92,7 @@ function mapABLFromAdmin(cfg) {
     ? cfg.latestGrid.map((n) => ({
         title: n?.title || "",
         image: n?.image || n?.imageUrl || "",
-        href: hrefFrom(n?.href, n?.slug), // ← supports slug
+        href: hrefFrom(n?.href, n?.slug),
         publishedAt: n?.publishedAt || "",
       }))
     : [];
@@ -85,7 +102,7 @@ function mapABLFromAdmin(cfg) {
         title: n?.title || "",
         summary: n?.summary || "",
         image: n?.image || n?.imageUrl || "",
-        href: hrefFrom(n?.href, n?.slug), // ← supports slug
+        href: hrefFrom(n?.href, n?.slug),
         publishedAt: n?.publishedAt || "",
       }))
     : [];
@@ -192,7 +209,7 @@ export default function WorldPage() {
             return; // ✅ use /settings/world
           }
         }
-      } catch (_) {
+      } catch {
         // ignore and fall back
       }
 
@@ -229,7 +246,7 @@ export default function WorldPage() {
       <h2 className="tv-section-title tv-plain" style={{ marginTop: 24 }}>LATEST</h2>
       <div style={{ display: "grid", gap: 14, gridTemplateColumns: "repeat(4, 1fr)" }}>
         {latest.map((it, i) => (
-          <a
+          <SmartLink
             key={i}
             href={it.href || "#"}
             onClick={(e) => { if (!it.href || it.href === "#") e.preventDefault(); }}
@@ -263,7 +280,7 @@ export default function WorldPage() {
                 {timeAgo(it.publishedAt)}
               </div>
             </div>
-          </a>
+          </SmartLink>
         ))}
       </div>
 
@@ -272,7 +289,7 @@ export default function WorldPage() {
       <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 12 }}>
         {more.map((it, i) => (
           <li key={i}>
-            <a
+            <SmartLink
               href={it.href || "#"}
               onClick={(e) => { if (!it.href || it.href === "#") e.preventDefault(); }}
               style={{
@@ -311,7 +328,7 @@ export default function WorldPage() {
                   {timeAgo(it.publishedAt)}
                 </div>
               </div>
-            </a>
+            </SmartLink>
           </li>
         ))}
       </ul>
@@ -327,7 +344,8 @@ export default function WorldPage() {
           div[style*="grid-template-columns: repeat(4, 1fr)"] {
             grid-template-columns: repeat(2, 1fr) !important;
           }
-          a[style*="grid-template-columns: 220px 1fr"] {
+          a[style*="grid-template-columns: 220px 1fr"],
+          [data-smartlink="1"][style*="grid-template-columns: 220px 1fr"] {
             grid-template-columns: 200px 1fr !important;
           }
         }
@@ -335,10 +353,12 @@ export default function WorldPage() {
           div[style*="grid-template-columns: repeat(4, 1fr)"] {
             grid-template-columns: 1fr !important;
           }
-          a[style*="grid-template-columns: 220px 1fr"] {
+          a[style*="grid-template-columns: 220px 1fr"],
+          [data-smartlink="1"][style*="grid-template-columns: 220px 1fr"] {
             grid-template-columns: 1fr !important;
           }
-          a[style*="grid-template-columns: 220px 1fr"] > div:first-child {
+          a[style*="grid-template-columns: 220px 1fr"] > div:first-child,
+          [data-smartlink="1"][style*="grid-template-columns: 220px 1fr"] > div:first-child {
             aspect-ratio: 16 / 9 !important;
           }
         }

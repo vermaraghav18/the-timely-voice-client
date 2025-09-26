@@ -1,5 +1,6 @@
 // src/components/StoryList.jsx
 import React, { useEffect, useState } from "react";
+import SmartLink from "./SmartLink";
 
 export default function StoryList({ title = "", stories = [], delayMs = 0 }) {
   const [highlight, setHighlight] = useState(false);
@@ -29,17 +30,28 @@ export default function StoryList({ title = "", stories = [], delayMs = 0 }) {
       <ul className="side-list">
         {stories.map((s, i) => (
           <li key={i} className="side-item">
-            <a
-              href={s.href || "#"}
+            <SmartLink
+              to={s.href || "#"}
               className="side-link"
               aria-label={s.title}
-              onClick={(e) => { if (!s.href || s.href === "#") e.preventDefault(); }}
+              onClick={(e) => {
+                if (!s.href || s.href === "#") e.preventDefault();
+              }}
             >
-              <img className="side-thumb" src={s.image} alt={s.title} loading="lazy" width="96" height="72" />
+              <img
+                className="side-thumb"
+                src={s.image}
+                alt={s.title}
+                loading="lazy"
+                width="96"
+                height="72"
+              />
               <span className="side-title">
-                <span className={`hl-sweep ${i === 0 && highlight ? "run" : ""}`}>{s.title}</span>
+                <span className={`hl-sweep ${i === 0 && highlight ? "run" : ""}`}>
+                  {s.title}
+                </span>
               </span>
-            </a>
+            </SmartLink>
           </li>
         ))}
       </ul>

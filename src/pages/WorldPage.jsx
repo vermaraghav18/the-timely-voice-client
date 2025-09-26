@@ -1,7 +1,7 @@
 // client/src/pages/WorldPage.jsx
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import ArticleBlockLight from "../components/ArticleBlockLight.jsx";
+import SmartLink from "../components/SmartLink.jsx";
 import "../App.css";
 
 const API_BASE =
@@ -15,22 +15,6 @@ const hrefFrom = (href, slug) => {
   if (slug) return `/article/${encodeURIComponent(slug)}`;
   return "#";
 };
-
-/* ---------- choose <Link> for internal, <a> for external ---------- */
-function SmartLink({ href, children, ...rest }) {
-  const isInternal = href && href.startsWith("/");
-  if (isInternal) return <Link to={href} {...rest}>{children}</Link>;
-  return (
-    <a
-      href={href || "#"}
-      target={href && !href.startsWith("/") ? "_blank" : undefined}
-      rel={href && !href.startsWith("/") ? "noopener noreferrer" : undefined}
-      {...rest}
-    >
-      {children}
-    </a>
-  );
-}
 
 /* ---------- map admin ArticleBlockLight / World settings ---------- */
 function mapABLFromAdmin(cfg) {
@@ -248,7 +232,8 @@ export default function WorldPage() {
         {latest.map((it, i) => (
           <SmartLink
             key={i}
-            href={it.href || "#"}
+            to={it.href || "#"}
+            data-smartlink="1"
             onClick={(e) => { if (!it.href || it.href === "#") e.preventDefault(); }}
             style={{
               display: "block",
@@ -290,7 +275,8 @@ export default function WorldPage() {
         {more.map((it, i) => (
           <li key={i}>
             <SmartLink
-              href={it.href || "#"}
+              to={it.href || "#"}
+              data-smartlink="1"
               onClick={(e) => { if (!it.href || it.href === "#") e.preventDefault(); }}
               style={{
                 display: "grid",

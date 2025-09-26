@@ -1,6 +1,7 @@
 // src/components/FeaturedArticle.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import StoryList from "./StoryList";
+import SmartLink from "./SmartLink";
 
 /* -------- helpers -------- */
 function timeAgo(iso) {
@@ -232,9 +233,9 @@ export default function FeaturedArticle({
 
             <h2 className="feat-title">
               {mappedFeatured.href ? (
-                <a href={mappedFeatured.href} onClick={handleFeatured}>
+                <SmartLink to={mappedFeatured.href} onClick={handleFeatured}>
                   {mappedFeatured.title}
-                </a>
+                </SmartLink>
               ) : (
                 mappedFeatured.title
               )}
@@ -246,9 +247,9 @@ export default function FeaturedArticle({
           </div>
 
           {mappedFeatured.imageUrl && (
-            <a
+            <SmartLink
               className="feat-image"
-              href={mappedFeatured.href || "#"}
+              to={mappedFeatured.href || "#"}
               aria-label={mappedFeatured.title}
               onClick={handleFeatured}
             >
@@ -268,7 +269,7 @@ export default function FeaturedArticle({
                   }}
                 />
               </div>
-            </a>
+            </SmartLink>
           )}
 
           {/* MINI CARDS */}
@@ -278,8 +279,8 @@ export default function FeaturedArticle({
                 key={i}
                 className={`rel-card ${activeRel === i ? "is-active" : ""}`}
               >
-                <a
-                  href={r.href || "#"}
+                <SmartLink
+                  to={r.href || "#"}
                   onClick={(e) => {
                     if (!r.href || r.href === "#") e.preventDefault();
                     onOpenRelated?.(r, i);
@@ -303,7 +304,7 @@ export default function FeaturedArticle({
                   </div>
                   <div className="rel-time">{r.time}</div>
                   <div className="rel-title">{r.title}</div>
-                </a>
+                </SmartLink>
               </li>
             ))}
           </ul>

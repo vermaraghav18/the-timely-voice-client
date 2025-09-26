@@ -1,4 +1,5 @@
 import React from "react";
+import SmartLink from "./SmartLink";
 
 export default function FeatureHero({
   main = {
@@ -42,16 +43,16 @@ export default function FeatureHero({
   return (
     <section className="feature-hero" style={style} aria-label="Top stories">
       {/* Background image */}
-      <a className="fh-bg" href={main.href} aria-label={main.title}>
+      <SmartLink className="fh-bg" to={main.href} aria-label={main.title}>
         <img src={main.image} alt="" />
         <div className="fh-vignette" />
-      </a>
+      </SmartLink>
 
       {/* Main copy block (left) */}
       <article className="fh-main">
-        <a className="fh-title" href={main.href}>
+        <SmartLink className="fh-title" to={main.href}>
           {main.title}
-        </a>
+        </SmartLink>
         <div className="fh-byline">By {main.author}</div>
         <p className="fh-summary">{main.summary}</p>
       </article>
@@ -59,7 +60,7 @@ export default function FeatureHero({
       {/* Bottom 3-teaser strip */}
       <div className="fh-teasers">
         {teasers.slice(0, 3).map((t, i) => (
-          <a className="fh-teaser" href={t.href} key={i}>
+          <SmartLink className="fh-teaser" to={t.href} key={i}>
             <div className="fh-teaser-media">
               <img src={t.image} alt="" />
             </div>
@@ -67,7 +68,7 @@ export default function FeatureHero({
               <div className="fh-teaser-title">{t.title}</div>
               <div className="fh-teaser-byline">By {t.author}</div>
             </div>
-          </a>
+          </SmartLink>
         ))}
       </div>
     </section>

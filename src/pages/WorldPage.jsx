@@ -8,6 +8,13 @@ const API_BASE =
   import.meta.env.VITE_API_URL ||
   "http://localhost:4000";
 
+/* ---------- small helper to synthesize href from slug ---------- */
+const hrefFrom = (href, slug) => {
+  if (href && href !== "#") return href;
+  if (slug) return `/article/${encodeURIComponent(slug)}`;
+  return "#";
+};
+
 /* ---------- map admin ArticleBlockLight / World settings ---------- */
 function mapABLFromAdmin(cfg) {
   const safe = {
@@ -26,7 +33,7 @@ function mapABLFromAdmin(cfg) {
     summary: hero.summary || "",
     image: hero.image || hero.imageUrl || "",
     alt: hero.title || "",
-    href: hero.href || "#",
+    href: hrefFrom(hero.href, hero.slug), // ← supports slug
     time: hero.time || "",
   };
 
@@ -37,7 +44,7 @@ function mapABLFromAdmin(cfg) {
         time: s?.time || "",
         image: s?.image || s?.imageUrl || "",
         alt: s?.alt || s?.title || "",
-        href: s?.href || "#",
+        href: hrefFrom(s?.href, s?.slug), // ← supports slug
       }))
     : [];
 
@@ -49,7 +56,7 @@ function mapABLFromAdmin(cfg) {
           time: n?.time || "",
           image: n?.image || n?.imageUrl || "",
           alt: n?.alt || n?.title || "",
-          href: n?.href || "#",
+          href: hrefFrom(n?.href, n?.slug), // ← supports slug
         }))
       : [],
   };
@@ -60,7 +67,7 @@ function mapABLFromAdmin(cfg) {
         title: n?.title || "",
         image: n?.image || n?.imageUrl || "",
         alt: n?.alt || n?.title || "",
-        href: n?.href || "#",
+        href: hrefFrom(n?.href, n?.slug), // ← supports slug
       }))
     : [];
 
@@ -68,7 +75,7 @@ function mapABLFromAdmin(cfg) {
     ? cfg.latestGrid.map((n) => ({
         title: n?.title || "",
         image: n?.image || n?.imageUrl || "",
-        href: n?.href || "#",
+        href: hrefFrom(n?.href, n?.slug), // ← supports slug
         publishedAt: n?.publishedAt || "",
       }))
     : [];
@@ -78,7 +85,7 @@ function mapABLFromAdmin(cfg) {
         title: n?.title || "",
         summary: n?.summary || "",
         image: n?.image || n?.imageUrl || "",
-        href: n?.href || "#",
+        href: hrefFrom(n?.href, n?.slug), // ← supports slug
         publishedAt: n?.publishedAt || "",
       }))
     : [];

@@ -13,24 +13,41 @@ export default function ArticlePage() {
   useEffect(() => {
     const ctrl = new AbortController();
     setState({ loading: true });
+
     fetchArticle(slug, { lang: i18n?.language || "en", signal: ctrl.signal })
       .then((data) => setState({ loading: false, data }))
-      .catch((err) => setState({ loading: false, error: err.message }));
+      .catch((err) => {
+        if (err?.name === "AbortError") return;
+        setState({ loading: false, error: err?.message || "Failed to load article" });
+      });
+
     return () => ctrl.abort();
   }, [slug, i18n?.language]);
 
+  useEffect(() => {
+    const t = state?.data?.title ? `${state.data.title} — The Timely Voice` : "Article — The Timely Voice";
+    document.title = t;
+  }, [state?.data?.title]);
+
   if (state.loading) return <div className="page">Loading…</div>;
   if (state.error) return <div className="page">Error: {state.error}</div>;
+
   const a = state.data || {};
 
   return (
     <div className="page article">
       <nav className="crumbs">
         <Link to="/">Home</Link>
-        {a?.category?.slug && <> / <Link to={`/section/${a.category.slug}`}>{a.category.name || a.category.slug}</Link></>}
+        {a?.category?.slug && (
+          <>
+            {" / "}
+            <Link to={`/section/${a.category.slug}`}>{a.category.name || a.category.slug}</Link>
+          </>
+        )}
       </nav>
 
-      <h1 className="article-title">{a.title}</h1>
+      <h1 className="article-title">{a.title || ""}</h1>
+
       <div className="article-meta">
         <span>{a.author || "Staff"}</span>
         {a.publishedAt && (
@@ -41,7 +58,12 @@ export default function ArticlePage() {
             </time>
           </>
         )}
-        {a.source && <> {" · "} <span>{a.source}</span></>}
+        {a.source && (
+          <>
+            {" · "}
+            <span>{a.source}</span>
+          </>
+        )}
       </div>
 
       <div className="article-hero">
@@ -65,9 +87,13 @@ export default function ArticlePage() {
         <div className="article-tags">
           {(a.tagsCsv || "")
             .split(",")
-            .map(t => t.trim())
+            .map((t) => t.trim())
             .filter(Boolean)
-            .map(t => <span className="tag" key={t}>#{t}</span>)}
+            .map((t) => (
+              <span className="tag" key={t}>
+                #{t}
+              </span>
+            ))}
         </div>
       )}
 

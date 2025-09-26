@@ -1,31 +1,42 @@
 // client/src/pages/ArticlePage.jsx
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { articles } from "../shared/api";   // ✅ use the shared API module
 import i18n from "../i18n";
-import { fetchArticle } from "../api";
 
 const FALLBACK_HERO = "https://picsum.photos/seed/article-hero/1200/675";
 
 export default function ArticlePage() {
   const { slug } = useParams();
-  const [state, setState] = useState({ loading: true });
+  const [state, setState] = useState({ loading: true, error: "", data: null });
 
   useEffect(() => {
-    const ctrl = new AbortController();
-    setState({ loading: true });
+    let aborted = false;
+    setState({ loading: true, error: "", data: null });
 
-    fetchArticle(slug, { lang: i18n?.language || "en", signal: ctrl.signal })
-      .then((data) => setState({ loading: false, data }))
+    articles
+      .get(slug) // hits /api/articles/:slug per your shared API
+      .then((data) => {
+        if (!aborted) setState({ loading: false, error: "", data });
+      })
       .catch((err) => {
-        if (err?.name === "AbortError") return;
-        setState({ loading: false, error: err?.message || "Failed to load article" });
+        if (!aborted)
+          setState({
+            loading: false,
+            error: err?.message || "Failed to load article",
+            data: null,
+          });
       });
 
-    return () => ctrl.abort();
-  }, [slug, i18n?.language]);
+    return () => {
+      aborted = true;
+    };
+  }, [slug, i18n?.language]); // keep if you later localize content server-side
 
   useEffect(() => {
-    const t = state?.data?.title ? `${state.data.title} — The Timely Voice` : "Article — The Timely Voice";
+    const t = state?.data?.title
+      ? `${state.data.title} — The Timely Voice`
+      : "Article — The Timely Voice";
     document.title = t;
   }, [state?.data?.title]);
 
@@ -41,7 +52,9 @@ export default function ArticlePage() {
         {a?.category?.slug && (
           <>
             {" / "}
-            <Link to={`/section/${a.category.slug}`}>{a.category.name || a.category.slug}</Link>
+            <Link to={`/section/${a.category.slug}`}>
+              {a.category.name || a.category.slug}
+            </Link>
           </>
         )}
       </nav>
@@ -71,14 +84,17 @@ export default function ArticlePage() {
           src={a.heroImageUrl || a.thumbnailUrl || FALLBACK_HERO}
           alt={a.title || ""}
           onError={(e) => {
-            if (e.currentTarget.src !== FALLBACK_HERO) e.currentTarget.src = FALLBACK_HERO;
+            if (e.currentTarget.src !== FALLBACK_HERO)
+              e.currentTarget.src = FALLBACK_HERO;
           }}
         />
       </div>
 
-      {/* Body: if server provides HTML, use dangerouslySetInnerHTML; if plain text, render as <p> */}
       {a.bodyHtml ? (
-        <div className="article-body" dangerouslySetInnerHTML={{ __html: a.bodyHtml }} />
+        <div
+          className="article-body"
+          dangerouslySetInnerHTML={{ __html: a.bodyHtml }}
+        />
       ) : (
         <p className="article-body">{a.body || ""}</p>
       )}
@@ -97,15 +113,20 @@ export default function ArticlePage() {
         </div>
       )}
 
-      {/* Simple related rail if provided */}
       {!!(a.related?.length) && (
         <>
           <h3>Related</h3>
-          <div className="tv-rail" style={{ overflowX: "auto", display: "flex", gap: 16 }}>
+          <div
+            className="tv-rail"
+            style={{ overflowX: "auto", display: "flex", gap: 16 }}
+          >
             {a.related.map((r) => (
               <Link key={r.slug} className="tv-card" to={`/article/${r.slug}`}>
                 <div className="tv-media">
-                  <img src={r.thumbnailUrl || r.heroImageUrl || FALLBACK_HERO} alt={r.title} />
+                  <img
+                    src={r.thumbnailUrl || r.heroImageUrl || FALLBACK_HERO}
+                    alt={r.title}
+                  />
                 </div>
                 <div className="tv-body">
                   <h4 className="tv-title">{r.title}</h4>
